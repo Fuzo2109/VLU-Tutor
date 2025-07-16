@@ -600,7 +600,23 @@
             <div class="header-student">Nguyen Van A</div>
         </div>
         <div class="header-right">
-            <div class="header-notify" title="Notifications"><i class="fas fa-bell"></i></div>
+            <div class="header-notify" title="Notifications" onclick="toggleNotifyMenu()"><i class="fas fa-bell"></i>
+                <div class="notify-menu" id="notifyMenu" style="display:none;position:absolute;right:0;top:48px;background:#fff;box-shadow:0 4px 24px rgba(33,150,243,0.13);border-radius:12px;min-width:260px;z-index:200;padding:0;">
+                  <div style='padding:14px 18px;font-weight:600;color:#1976d2;border-bottom:1px solid #e3f2fd;'>Notifications</div>
+                  <div style='padding:12px 18px;border-bottom:1px solid #f0f0f0;'>
+                    <span style='color:#43a047;font-weight:500;'><i class="fas fa-check-circle"></i> Được VLU center duyệt hồ sơ gia sư</span>
+                  </div>
+                  <div style='padding:12px 18px;border-bottom:1px solid #f0f0f0;'>
+                    <span style='color:#b11f24;font-weight:500;'><i class="fas fa-times-circle"></i> Từ chối</span>
+                  </div>
+                  <div style='padding:12px 18px;border-bottom:1px solid #f0f0f0;'>
+                    <span style='color:#ff9800;font-weight:500;'><i class="fas fa-exclamation-circle"></i> Bổ sung thêm thông tin của đơn apply as tutor</span>
+                  </div>
+                  <div style='padding:12px 18px;'>
+                    <span style='color:#1976d2;font-weight:500;'><i class="fas fa-hourglass-half"></i> Đang chờ duyệt hồ sơ</span>
+                  </div>
+                </div>
+            </div>
             <div class="header-profile">
                 <img src="images/tutor1.jpg" alt="Avatar" class="header-avatar" onclick="toggleProfileMenu()">
                 <div class="profile-menu" id="profileMenu">
@@ -642,6 +658,13 @@
                 <button class="modal-close" onclick="closeApplyTutorModal()">×</button>
                                     </div>
             <form id="tutorApplyForm">
+                <div class="learner-profile-summary" style="background:#f8fafc;padding:12px 16px;border-radius:8px;margin-bottom:16px;">
+                  <div><b>Name:</b> Nguyen Van A</div>
+                  <div><b>Student ID:</b> 12345678</div>
+                  <div><b>Email:</b> nguyenvana@vlu.edu.vn</div>
+                  <div><b>Class:</b> K25CNTT</div>
+                  <div><b>Date of Birth:</b> May 12, 2003</div>
+                </div>
                 <div class="form-group">
                     <label>GPA:</label>
                     <input type="number" step="0.01" min="0" max="4" name="gpa" required>
@@ -802,6 +825,16 @@
         document.body.addEventListener('click', function(e) {
             if (!e.target.closest('.header-profile')) {
                 document.getElementById('profileMenu').classList.remove('active');
+            }
+        });
+        // Thông báo dropdown
+        function toggleNotifyMenu() {
+            const menu = document.getElementById('notifyMenu');
+            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
+        }
+        document.body.addEventListener('click', function(e) {
+            if (!e.target.closest('.header-notify')) {
+                document.getElementById('notifyMenu').style.display = 'none';
             }
         });
         // Dashboard render

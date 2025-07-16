@@ -290,10 +290,10 @@
         </div>
     </div>
     <script>
-        // Helper: get role from query string
+        // Helper: get role from localStorage hoặc query string
         function getRole() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('role') || 'learner';
+            // Ưu tiên lấy từ localStorage, nếu không có thì lấy từ query string, nếu vẫn không có thì mặc định là 'learner'
+            return localStorage.getItem('role') || new URLSearchParams(window.location.search).get('role') || 'learner';
         }
         const role = getRole();
         // Chat logic
