@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLU Tutor System - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/layout-base.css">
+    <link rel="stylesheet" href="css/admin-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="logo-text">VLU Admin</div>
+            </div>
+
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <div class="user-name">Mr. John Smith</div>
+                <div class="user-role">IT Admin</div>
+                <div style="font-size: var(--font-size-xs); color: rgba(255,255,255,0.7); margin-top: var(--spacing-xs);">
+                    ID: A001234
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="nav-icon fas fa-server"></i>
+                            System Monitoring
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showUserManagementModal()">
+                            <i class="nav-icon fas fa-users-cog"></i>
+                            User Management
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="landing.html" class="nav-link">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <h1 style="font-size: var(--font-size-2xl); color: var(--gray-800); margin: 0;">
+                        System Monitoring Dashboard
+                    </h1>
+                </div>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell" style="font-size: 20px; color: var(--gray-600);"></i>
+                        <div class="notification-badge">12</div>
+                    </div>
+                    <div class="user-avatar" style="width: 40px; height: 40px; margin: 0;">
+                        <i class="fas fa-user-cog" style="font-size: 16px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Key Metrics Cards -->
+                <div class="metrics-grid">
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <div class="card-title">Total Users</div>
+                            <div class="card-icon" style="background: var(--admin-primary);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">1,234</div>
+                        <div class="card-label">Registered</div>
+                    </div>
+
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <div class="card-title">System Health</div>
+                            <div class="card-icon" style="background: var(--admin-secondary);">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">98%</div>
+                        <div class="card-label">Uptime</div>
+                    </div>
+
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <div class="card-title">Active Sessions</div>
+                            <div class="card-icon" style="background: #4caf50;">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">156</div>
+                        <div class="card-label">Current</div>
+                    </div>
+
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <div class="card-title">System Logs</div>
+                            <div class="card-icon" style="background: #ff9800;">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">2,847</div>
+                        <div class="card-label">Today</div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">System Performance</div>
+                        </div>
+                        <canvas id="systemPerformanceChart" width="400" height="200"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">User Activity</div>
+                        </div>
+                        <canvas id="userActivityChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tables Section -->
+                <div class="tables-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <div class="table-title">System Logs</div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Type</th>
+                                    <th>User</th>
+                                    <th>Message</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>14:30:25</td>
+                                    <td><span style="color: #f44336;">ERROR</span></td>
+                                    <td>student@vlu.edu.vn</td>
+                                    <td>Login failed - Invalid credentials</td>
+                                    <td><span style="color: #f44336;">Failed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>14:28:15</td>
+                                    <td><span style="color: #4caf50;">INFO</span></td>
+                                    <td>tutor@vlu.edu.vn</td>
+                                    <td>Lesson created successfully</td>
+                                    <td><span style="color: #4caf50;">Success</span></td>
+                                </tr>
+                                <tr>
+                                    <td>14:25:42</td>
+                                    <td><span style="color: #ff9800;">WARNING</span></td>
+                                    <td>center@vlu.edu.vn</td>
+                                    <td>High memory usage detected</td>
+                                    <td><span style="color: #ff9800;">Warning</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <div class="table-title">User Management</div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Nguyen Van A</td>
+                                    <td>student@vlu.edu.vn</td>
+                                    <td>Learner</td>
+                                    <td><span style="color: #4caf50;">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;">Edit</button>
+                                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; margin-left: 4px;">Suspend</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Dr. Sarah Johnson</td>
+                                    <td>tutor@vlu.edu.vn</td>
+                                    <td>Tutor</td>
+                                    <td><span style="color: #4caf50;">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;">Edit</button>
+                                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; margin-left: 4px;">Suspend</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ms. Maria Garcia</td>
+                                    <td>center@vlu.edu.vn</td>
+                                    <td>Center Staff</td>
+                                    <td><span style="color: #4caf50;">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;">Edit</button>
+                                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; margin-left: 4px;">Suspend</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- User Management Modal -->
+    <div id="userManagementModal" style="display:none; position:fixed; z-index:10001; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+        <div class="card" style="width: 90vw; max-height: 90vh; overflow-y: auto;">
+            <div class="card-header">
+                <div class="card-title">User Management</div>
+                <button onclick="closeUserManagementModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+            </div>
+            <div style="padding: var(--spacing-lg);">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>USER ID</th>
+                                <th>NAME</th>
+                                <th>EMAIL</th>
+                                <th>ROLE</th>
+                                <th>STATUS</th>
+                                <th>LAST LOGIN</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" style="display:none; position:fixed; z-index:10002; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        <div style="width: 90%; max-width: 600px; max-height: 90vh; overflow: hidden; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); position: relative;" onclick="event.stopPropagation();">
+            <!-- Modal Header -->
+            <div style="background: linear-gradient(135deg, var(--admin-primary), #1976d2); color: white; padding: 20px 24px; border-radius: 12px 12px 0 0; position: relative;">
+                <button onclick="closeEditUserModal()" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 style="margin: 0; font-size: 1.8rem;">Edit User Account</h2>
+                <p style="margin: 8px 0 0 0; opacity: 0.9;">Update user information and manage password</p>
+            </div>
+            
+            <!-- Modal Content -->
+            <div style="padding: 24px; overflow-y: auto; max-height: calc(90vh - 140px);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">User ID:</label>
+                        <input type="text" id="editUserId" readonly style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1rem; background: #f8f9fa;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Name: <span style="color:#ff0000;">*</span></label>
+                        <input type="text" id="editUserName" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Email: <span style="color:#ff0000;">*</span></label>
+                        <input type="email" id="editUserEmail" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Role: <span style="color:#ff0000;">*</span></label>
+                        <select id="editUserRole" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                            <option value="Learner">Learner</option>
+                            <option value="Tutor">Tutor</option>
+                            <option value="Center Staff">Center Staff</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Password Reset Section -->
+                <div style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+                    <h4 style="color: var(--admin-primary); margin-bottom: 16px;">Password Management</h4>
+                    <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px;">
+                        <button onclick="generateNewPassword()" style="background: var(--admin-primary); color: white; border: none; border-radius: 8px; padding: 12px 20px; font-size: 1rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='var(--admin-primary)'">
+                            <i class="fas fa-key"></i> Generate New Password
+                        </button>
+                        <button onclick="copyPassword()" id="copyPasswordBtn" style="background: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 20px; font-size: 1rem; cursor: pointer; transition: background 0.2s; display: none;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                            <i class="fas fa-copy"></i> Copy Password
+                        </button>
+                    </div>
+                    <div id="newPasswordDisplay" style="display: none;">
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">New Password:</label>
+                        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 1rem; color: var(--admin-primary); font-weight: 600;" id="newPasswordText">
+                            <!-- Generated password will appear here -->
+                        </div>
+                        <p style="margin: 8px 0 0 0; color: #666; font-size: 0.9rem;">
+                            <i class="fas fa-info-circle"></i> 
+                            This password will be set when you save the changes. Please inform the user of their new password.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Current Status -->
+                <div style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                    <h4 style="color: var(--admin-primary); margin-bottom: 12px;">Account Status</h4>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-weight: 500;">Current Status:</span>
+                        <span id="editUserStatus" style="color: #4caf50; font-weight: 600;">Active</span>
+                        <button onclick="toggleUserStatusInEdit()" id="toggleStatusBtn" style="background: #f44336; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 0.9rem; cursor: pointer; margin-left: auto;">
+                            <i class="fas fa-ban"></i> Suspend Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div style="padding: 20px 24px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; gap: 12px; justify-content: flex-end;">
+                <button onclick="closeEditUserModal()" style="background: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 1rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                    Cancel
+                </button>
+                <button onclick="saveUserChanges()" style="background: var(--admin-primary); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 1rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='var(--admin-primary)'">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // System Performance Chart
+            const systemPerformanceCtx = document.getElementById('systemPerformanceChart').getContext('2d');
+            new Chart(systemPerformanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                    datasets: [{
+                        label: 'CPU Usage',
+                        data: [45, 35, 60, 75, 85, 70, 50],
+                        borderColor: '#f44336',
+                        backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Memory Usage',
+                        data: [30, 25, 40, 55, 65, 50, 35],
+                        borderColor: '#ef5350',
+                        backgroundColor: 'rgba(239, 83, 80, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // User Activity Chart
+            const userActivityCtx = document.getElementById('userActivityChart').getContext('2d');
+            new Chart(userActivityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Learners', 'Tutors', 'Center Staff', 'Admins'],
+                    datasets: [{
+                        data: [65, 20, 10, 5],
+                        backgroundColor: ['#f44336', '#ef5350', '#ff9800', '#ff5722']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+
+        // Modal Functions
+        function showUserManagementModal() {
+            const modal = document.getElementById('userManagementModal');
+            modal.style.display = 'flex';
+            loadUsersList();
+        }
+
+        function closeUserManagementModal() {
+            document.getElementById('userManagementModal').style.display = 'none';
+        }
+
+        function loadUsersList() {
+            const tableBody = document.getElementById('usersTableBody');
+            
+            // Use global usersData
+            const users = usersData;
+            
+            tableBody.innerHTML = '';
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <span style="color: ${getRoleColor(user.role)}; font-weight: 600;">
+                            ${user.role}
+                        </span>
+                    </td>
+                    <td>
+                        <span style="color: ${user.status === 'Active' ? '#4caf50' : '#f44336'}; font-weight: 600;">
+                            ${user.status}
+                        </span>
+                    </td>
+                    <td>${user.lastLogin}</td>
+                    <td>
+                        <button onclick="editUser('${user.id}')" style="background: #2196f3; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; margin-right: 4px;">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button onclick="toggleUserStatus('${user.id}')" style="background: ${user.status === 'Active' ? '#f44336' : '#4caf50'}; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer;">
+                            <i class="fas fa-${user.status === 'Active' ? 'ban' : 'check'}"></i> ${user.status === 'Active' ? 'Suspend' : 'Activate'}
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function getRoleColor(role) {
+            switch(role) {
+                case 'Learner': return '#2196f3';
+                case 'Tutor': return '#4caf50';
+                case 'Center Staff': return '#ff9800';
+                case 'Admin': return '#f44336';
+                default: return '#666';
+            }
+        }
+
+        let currentEditingUser = null;
+        let generatedPassword = '';
+        
+        // Global users data that can be updated
+        let usersData = [
+            { id: 'U001', name: 'Nguyen Van A', email: 'student@vlu.edu.vn', role: 'Learner', status: 'Active', lastLogin: '2024-01-20 14:30:25' },
+            { id: 'U002', name: 'Dr. Sarah Johnson', email: 'tutor@vlu.edu.vn', role: 'Tutor', status: 'Active', lastLogin: '2024-01-20 15:45:12' },
+            { id: 'U003', name: 'Le Thi B', email: 'student2@vlu.edu.vn', role: 'Learner', status: 'Active', lastLogin: '2024-01-20 16:20:33' },
+            { id: 'U004', name: 'Prof. Michael Chen', email: 'tutor2@vlu.edu.vn', role: 'Tutor', status: 'Active', lastLogin: '2024-01-20 13:15:45' },
+            { id: 'U005', name: 'Tran Van C', email: 'student3@vlu.edu.vn', role: 'Learner', status: 'Inactive', lastLogin: '2024-01-19 09:30:12' },
+            { id: 'U006', name: 'Dr. Emily Davis', email: 'tutor3@vlu.edu.vn', role: 'Tutor', status: 'Active', lastLogin: '2024-01-20 17:45:28' },
+            { id: 'U007', name: 'Pham Thi D', email: 'student4@vlu.edu.vn', role: 'Learner', status: 'Active', lastLogin: '2024-01-20 11:22:15' },
+            { id: 'U008', name: 'Ms. Maria Garcia', email: 'center@vlu.edu.vn', role: 'Center Staff', status: 'Active', lastLogin: '2024-01-20 10:15:42' },
+            { id: 'U009', name: 'Hoang Van E', email: 'student5@vlu.edu.vn', role: 'Learner', status: 'Active', lastLogin: '2024-01-20 18:30:55' },
+            { id: 'U010', name: 'Prof. David Wilson', email: 'tutor4@vlu.edu.vn', role: 'Tutor', status: 'Inactive', lastLogin: '2024-01-18 14:20:30' }
+        ];
+
+        function editUser(userId) {
+            // Find user data from global usersData
+            const user = usersData.find(u => u.id === userId);
+            if (!user) {
+                alert('User not found!');
+                return;
+            }
+            
+            currentEditingUser = user;
+            
+            // Populate form fields
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('editUserName').value = user.name;
+            document.getElementById('editUserEmail').value = user.email;
+            document.getElementById('editUserRole').value = user.role;
+            document.getElementById('editUserStatus').textContent = user.status;
+            document.getElementById('editUserStatus').style.color = user.status === 'Active' ? '#4caf50' : '#f44336';
+            
+            // Update toggle button
+            const toggleBtn = document.getElementById('toggleStatusBtn');
+            if (user.status === 'Active') {
+                toggleBtn.innerHTML = '<i class="fas fa-ban"></i> Suspend Account';
+                toggleBtn.style.background = '#f44336';
+            } else {
+                toggleBtn.innerHTML = '<i class="fas fa-check"></i> Activate Account';
+                toggleBtn.style.background = '#4caf50';
+            }
+            
+            // Reset password section
+            document.getElementById('newPasswordDisplay').style.display = 'none';
+            document.getElementById('copyPasswordBtn').style.display = 'none';
+            generatedPassword = '';
+            
+            // Show modal
+            document.getElementById('editUserModal').style.display = 'flex';
+        }
+
+        function closeEditUserModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+            currentEditingUser = null;
+            generatedPassword = '';
+        }
+
+        function generateNewPassword() {
+            // Generate a random password
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+            let password = '';
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            generatedPassword = password;
+            
+            // Display password
+            document.getElementById('newPasswordText').textContent = password;
+            document.getElementById('newPasswordDisplay').style.display = 'block';
+            document.getElementById('copyPasswordBtn').style.display = 'inline-block';
+        }
+
+        function copyPassword() {
+            if (generatedPassword) {
+                navigator.clipboard.writeText(generatedPassword).then(() => {
+                    const btn = document.getElementById('copyPasswordBtn');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    btn.style.background = '#4caf50';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '#6c757d';
+                    }, 2000);
+                }).catch(() => {
+                    alert('Failed to copy password. Please copy manually: ' + generatedPassword);
+                });
+            }
+        }
+
+        function toggleUserStatusInEdit() {
+            const statusSpan = document.getElementById('editUserStatus');
+            const toggleBtn = document.getElementById('toggleStatusBtn');
+            
+            if (statusSpan.textContent === 'Active') {
+                statusSpan.textContent = 'Inactive';
+                statusSpan.style.color = '#f44336';
+                toggleBtn.innerHTML = '<i class="fas fa-check"></i> Activate Account';
+                toggleBtn.style.background = '#4caf50';
+            } else {
+                statusSpan.textContent = 'Active';
+                statusSpan.style.color = '#4caf50';
+                toggleBtn.innerHTML = '<i class="fas fa-ban"></i> Suspend Account';
+                toggleBtn.style.background = '#f44336';
+            }
+        }
+
+        function saveUserChanges() {
+            const name = document.getElementById('editUserName').value.trim();
+            const email = document.getElementById('editUserEmail').value.trim();
+            const role = document.getElementById('editUserRole').value;
+            const status = document.getElementById('editUserStatus').textContent;
+            
+            if (!name || !email) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+            
+            // Update the user data in global usersData
+            const userIndex = usersData.findIndex(u => u.id === currentEditingUser.id);
+            if (userIndex !== -1) {
+                usersData[userIndex].name = name;
+                usersData[userIndex].email = email;
+                usersData[userIndex].role = role;
+                usersData[userIndex].status = status;
+            }
+            
+            // Simulate saving changes
+            let message = `User ${currentEditingUser.id} updated successfully!\n\n`;
+            message += `Name: ${name}\n`;
+            message += `Email: ${email}\n`;
+            message += `Role: ${role}\n`;
+            message += `Status: ${status}`;
+            
+            if (generatedPassword) {
+                message += `\n\nNew password has been set: ${generatedPassword}`;
+            }
+            
+            alert(message);
+            
+            // Close modal
+            closeEditUserModal();
+            
+            // Refresh user list with updated data
+            loadUsersList();
+        }
+
+        function toggleUserStatus(userId) {
+            if (confirm('Are you sure you want to change this user\'s status?')) {
+                // Update the user status in global usersData
+                const userIndex = usersData.findIndex(u => u.id === userId);
+                if (userIndex !== -1) {
+                    const newStatus = usersData[userIndex].status === 'Active' ? 'Inactive' : 'Active';
+                    usersData[userIndex].status = newStatus;
+                }
+                
+                // Refresh the table to show updated data
+                loadUsersList();
+                
+                alert(`User ${userId} status updated successfully!`);
+            }
+        }
+    </script>
+</body>
+</html> 

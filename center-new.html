@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLU Tutor System - Center Dashboard</title>
+    <link rel="stylesheet" href="css/layout-base.css">
+    <link rel="stylesheet" href="css/center-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Profile Modal Styles */
+        .profile-tab.active {
+            font-weight: 600 !important;
+            color: #4caf50 !important;
+            border-bottom: 3px solid #4caf50 !important;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        #tutorProfileModal {
+            backdrop-filter: blur(5px);
+        }
+        
+        #tutorProfileModal .modal-content {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="logo-text">VLU Tutor</div>
+            </div>
+
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-name">VLU Staff</div>
+                <div class="user-role">Administrator</div>
+                <div style="font-size: var(--font-size-xs); color: var(--gray-500); margin-top: var(--spacing-xs);">
+                    ID: STAFF001
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" onclick="showDashboard()">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTutorApplications()">
+                            <i class="nav-icon fas fa-user-graduate"></i>
+                            Tutor Applications
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showManageTutorsModal()">
+                            <i class="nav-icon fas fa-users"></i>
+                            Manage Tutors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showManageLessonsModal()">
+                            <i class="nav-icon fas fa-book"></i>
+                            Manage Lessons
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="landing.html" class="nav-link">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <h1 style="font-size: var(--font-size-2xl); color: var(--gray-800); margin: 0;">
+                        VLU Staff Dashboard
+                    </h1>
+                </div>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell" style="font-size: 20px; color: var(--gray-600);"></i>
+                        <div class="notification-badge">5</div>
+                    </div>
+                    <div class="user-avatar" style="width: 40px; height: 40px; margin: 0;">
+                        <i class="fas fa-user" style="font-size: 16px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <div id="dashboardSection">
+                <!-- Key Metrics Cards -->
+                <div class="metrics-grid">
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <div class="card-title">Pending Applications</div>
+                            <div class="card-icon" style="background: var(--center-primary);">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                            <div class="card-value" id="pendingCount">0</div>
+                            <div class="card-label">Applications</div>
+                    </div>
+
+                    <div class="card fade-in">
+                        <div class="card-header">
+                                <div class="card-title">Approved Tutors</div>
+                            <div class="card-icon" style="background: var(--center-secondary);">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="approvedCount">0</div>
+                            <div class="card-label">Total</div>
+                    </div>
+
+                    <div class="card fade-in">
+                        <div class="card-header">
+                                <div class="card-title">Active Lessons</div>
+                            <div class="card-icon" style="background: #4caf50;">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">12</div>
+                            <div class="card-label">Today</div>
+                    </div>
+
+                    <div class="card fade-in">
+                        <div class="card-header">
+                                <div class="card-title">Total Students</div>
+                            <div class="card-icon" style="background: #ff9800;">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">156</div>
+                            <div class="card-label">Registered</div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">Subject Statistics (by month)</div>
+                        </div>
+                        <canvas id="subjectStatsChart" width="400" height="200"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">Lesson Activity (in month)</div>
+                        </div>
+                        <canvas id="lessonActivityChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tables Section -->
+                <div class="tables-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <div class="table-title">Active Users</div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dr. Sarah Johnson</td>
+                                    <td>sarah.johnson@vlu.edu.vn</td>
+                                    <td>Tutor</td>
+                                    <td><span style="color: #4caf50;">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nguyen Van A</td>
+                                    <td>student@vlu.edu.vn</td>
+                                    <td>Learner</td>
+                                    <td><span style="color: #4caf50;">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Le Thi B</td>
+                                    <td>student2@vlu.edu.vn</td>
+                                    <td>Learner</td>
+                                    <td><span style="color: #4caf50;">Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                        <div class="table-container">
+                            <div class="table-header">
+                                <div class="table-title">Recent Activities</div>
+                </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Activity</th>
+                                        <th>User</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Lesson Created</td>
+                                        <td>Dr. Sarah Johnson</td>
+                                        <td>2 hours ago</td>
+                                        <td><span style="color: #4caf50;">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Application Submitted</td>
+                                        <td>Nguyen Van A</td>
+                                        <td>1 day ago</td>
+                                        <td><span style="color: #ffc107;">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lesson Completed</td>
+                                        <td>Le Thi B</td>
+                                        <td>3 days ago</td>
+                                        <td><span style="color: #4caf50;">Completed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+            </div>
+        </div>
+    </div>
+
+                <!-- Tutor Applications Section -->
+                <div id="tutorApplicationsSection" style="display: none;">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <div class="table-title">Tutor Applications Management</div>
+                            <button onclick="refreshApplications()" style="background: var(--center-primary); color: white; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer;">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Serial Number</th>
+                                    <th>Submission Time</th>
+                                    <th>Full Name</th>
+                                    <th>Student ID</th>
+                                    <th>Application Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsTableBody">
+                                <!-- Applications will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Details Modal -->
+    <div id="applicationDetailsModal" style="display:none; position:fixed; z-index:10001; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+        <div class="card" style="width: 70vw; max-height: 80vh; overflow-y: auto;">
+            <div class="card-header">
+                <div class="card-title">Application Details</div>
+                <button onclick="closeApplicationDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+            </div>
+            <div style="padding: var(--spacing-lg);">
+                <div id="applicationDetailsContent">
+                    <!-- Application details will be loaded here -->
+            </div>
+                
+                <!-- Conditional Action Buttons -->
+                <div id="pendingActions" style="display: none; margin-top: 24px; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+                    <h4 style="color: var(--center-primary); margin-bottom: 16px;">Application Actions</h4>
+                    <div style="display: flex; gap: 16px;">
+                        <button onclick="approveApplication()" style="background: #4caf50; color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                            <i class="fas fa-check"></i> Approve
+                        </button>
+                        <button onclick="requestMoreInfo()" style="background: #ffc107; color: #333; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                            <i class="fas fa-exclamation-triangle"></i> Needs Info
+                        </button>
+        </div>
+    </div>
+
+                <!-- Interview Scheduling Form -->
+                <div id="interviewForm" style="display: none; margin-top: 24px; padding: 24px; background: #f8f9fa; border-radius: 12px;">
+                    <h4 style="color: var(--center-primary); margin-bottom: 16px;">Schedule Interview</h4>
+                    <div style="display: grid; gap: 16px;">
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 8px;">Interview Date: <span style="color:#ff0000;">*</span></label>
+                            <input type="date" id="interviewDate" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 8px;">Interview Time: <span style="color:#ff0000;">*</span></label>
+                            <input type="time" id="interviewTime" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+            </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 8px;">Additional Notes:</label>
+                            <textarea id="interviewNotes" rows="3" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; resize: vertical;" placeholder="Any special requirements or notes for the interview..."></textarea>
+            </div>
+                        <button onclick="confirmInterview()" style="background: #4caf50; color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                            <i class="fas fa-calendar-check"></i> Confirm Interview
+                        </button>
+        </div>
+    </div>
+
+                <!-- Additional Info Form -->
+                <div id="additionalInfoForm" style="display: none; margin-top: 24px; padding: 24px; background: #fff8e1; border-radius: 12px;">
+                    <h4 style="color: #ffc107; margin-bottom: 16px;">Request Additional Information</h4>
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Required Information: <span style="color:#ff0000;">*</span></label>
+                        <textarea id="additionalInfo" rows="4" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; resize: vertical;" placeholder="Specify what additional information is needed (e.g. missing documents, phone number, etc)..."></textarea>
+                    </div>
+                    <button onclick="sendInfoRequest()" style="background: #ffc107; color: #333; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Tutors Modal -->
+    <div id="manageTutorsModal" style="display:none; position:fixed; z-index:10002; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+        <div class="card" style="width: 90vw; max-height: 90vh; overflow-y: auto;">
+            <div class="card-header">
+                <div class="card-title">Manage Tutors</div>
+                <button onclick="closeManageTutorsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+            </div>
+            <div style="padding: var(--spacing-lg);">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>TUTOR ID</th>
+                                <th>NAME</th>
+                                <th>SUBJECTS</th>
+                                <th>RATING</th>
+                                <th>STATUS</th>
+                                <th>STUDENTS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tutorsTableBody">
+                            <!-- Tutors will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Lessons Modal -->
+    <div id="manageLessonsModal" style="display:none; position:fixed; z-index:10003; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+        <div class="card" style="width: 90vw; max-height: 90vh; overflow-y: auto;">
+            <div class="card-header">
+                <div class="card-title">Manage Lessons</div>
+                <button onclick="closeManageLessonsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+            </div>
+            <div style="padding: var(--spacing-lg);">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>LESSON ID</th>
+                                <th>SUBJECT</th>
+                                <th>TUTOR</th>
+                                <th>STUDENT</th>
+                                <th>DATE & TIME</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lessonsTableBody">
+                            <!-- Lessons will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesson Details Modal -->
+    <div id="lessonDetailsModal" style="display:none; position:fixed; z-index:10004; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+        <div class="card" style="width: 70vw; max-height: 80vh; overflow-y: auto;">
+            <div class="card-header">
+                <div class="card-title">Lesson Details</div>
+                <button onclick="closeLessonDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+            </div>
+            <div style="padding: var(--spacing-lg);">
+                <div id="lessonDetailsContent">
+                    <!-- Lesson details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Lesson Modal -->
+    <div id="editLessonModal" style="display:none; position:fixed; z-index:10005; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+        <div class="card" style="width: 80vw; max-height: 90vh; overflow-y: auto;">
+            <div class="card-header">
+                <div class="card-title">Edit Lesson</div>
+                <button onclick="closeEditLessonModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+            </div>
+            <div style="padding: var(--spacing-lg);">
+                <div id="editLessonContent">
+                    <!-- Edit form will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutor Profile Modal -->
+    <div id="tutorProfileModal" style="display: none; position: fixed; z-index: 10006; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+        <div style="width: 90%; max-width: 1000px; max-height: 90vh; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); position: relative; display: flex; flex-direction: column;" onclick="event.stopPropagation();">
+            <!-- Profile Header -->
+            <div style="background: linear-gradient(135deg, #4caf50, #45a049); color: white; padding: 20px 24px; border-radius: 12px 12px 0 0; position: relative;">
+                <button onclick="closeTutorProfileModal()" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div style="width: 80px; height: 80px; background: #4caf50; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h2 id="profileTutorName" style="margin: 0; font-size: 1.8rem;">Dr. Sarah Johnson</h2>
+                        <div style="font-size: 1rem; opacity: 0.9; margin-bottom: 4px;">American</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8; display: flex; align-items: center; gap: 16px;">
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                4.9 (98% positive)
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-users"></i>
+                                1.2K students
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Information Tags -->
+            <div style="padding: 16px 24px; background: #f8f9fa; border-bottom: 1px solid #e0e0e0;">
+                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                    <div style="background: #e9ecef; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-list"></i>
+                        <span>Teaches: <span id="profileTeaches">Intermediate | Upper Intermediate | Advanced</span></span>
+                    </div>
+                    <div style="background: #e9ecef; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-star" style="color: #007bff;"></i>
+                        <span>Test familiarity: <span id="profileTests">SAT, ACT, AP Calculus</span></span>
+                    </div>
+                    <div style="background: #e9ecef; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Industry familiarity: <span id="profileIndustry">Education, Research</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <div style="padding: 0 24px; background: white; border-bottom: 1px solid #e0e0e0;">
+                <div style="display: flex; gap: 32px;">
+                    <button onclick="switchTutorTab('about')" id="tutorTabAbout" class="profile-tab active" style="padding: 16px 0; border: none; background: none; font-size: 1rem; font-weight: 600; color: #4caf50; border-bottom: 3px solid #4caf50; cursor: pointer;">
+                        About
+                    </button>
+                    <button onclick="switchTutorTab('reviews')" id="tutorTabReviews" class="profile-tab" style="padding: 16px 0; border: none; background: none; font-size: 1rem; font-weight: 500; color: #666; border-bottom: 3px solid transparent; cursor: pointer;">
+                        Reviews
+                    </button>
+                    <button onclick="switchTutorTab('specialties')" id="tutorTabSpecialties" class="profile-tab" style="padding: 16px 0; border: none; background: none; font-size: 1rem; font-weight: 500; color: #666; border-bottom: 3px solid transparent; cursor: pointer;">
+                        Specialties
+                    </button>
+                    <button onclick="switchTutorTab('experience')" id="tutorTabExperience" class="profile-tab" style="padding: 16px 0; border: none; background: none; font-size: 1rem; font-weight: 500; color: #666; border-bottom: 3px solid transparent; cursor: pointer;">
+                        Experience
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div style="padding: 24px; overflow-y: auto; flex: 1; min-height: 0;">
+                <!-- About Tab -->
+                <div id="tutorTabContentAbout" class="tab-content active">
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="color: #333; margin-bottom: 16px;">Hello!</h3>
+                        <div style="margin-bottom: 16px;">
+                            <p style="line-height: 1.6; color: #666;">I'm from the United States and have been teaching mathematics and physics for eight years. I'm passionate about simplifying complex concepts and helping students understand real-world applications. My teaching style focuses on building strong foundations and developing problem-solving skills.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="color: #333; margin-bottom: 16px;">Student Preferences</h3>
+                        <p style="color: #666;">Open to new students</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="color: #333; margin-bottom: 16px;">Languages</h3>
+                        <p style="color: #666;">English (Native)<br>Spanish (Conversational)</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="color: #333; margin-bottom: 16px;">Industry Familiarity</h3>
+                        <p style="color: #666;">Education<br>Research</p>
+                    </div>
+                </div>
+                
+                <!-- Reviews Tab -->
+                <div id="tutorTabContentReviews" class="tab-content" style="display: none;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Student Reviews</h3>
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                        <div style="font-size: 3rem; font-weight: 700; color: #4caf50;">4.9</div>
+                        <div>
+                            <div style="display: flex; gap: 4px; margin-bottom: 8px;">
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                            </div>
+                            <div style="color: #666; font-size: 0.9rem;">Based on 1,247 reviews</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div style="font-weight: 600; color: #333;">Excellent teacher!</div>
+                                <div style="display: flex; gap: 2px;">
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                </div>
+                            </div>
+                            <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px;">Dr. Johnson made calculus so much easier to understand. Her explanations are clear and she's very patient.</div>
+                            <div style="color: #999; font-size: 0.8rem;">- Nguyen Van A, 2 days ago</div>
+                        </div>
+                        
+                        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div style="font-weight: 600; color: #333;">Great physics tutor</div>
+                                <div style="display: flex; gap: 2px;">
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                    <i class="fas fa-star" style="color: #ffc107; font-size: 0.8rem;"></i>
+                                </div>
+                            </div>
+                            <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px;">Very knowledgeable and explains complex topics in simple terms. Highly recommend!</div>
+                            <div style="color: #999; font-size: 0.8rem;">- Le Thi B, 1 week ago</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Specialties Tab -->
+                <div id="tutorTabContentSpecialties" class="tab-content" style="display: none;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Teaching Specialties</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                        <div style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                            <h4 style="color: #4caf50; margin-bottom: 8px;">Mathematics</h4>
+                            <ul style="margin: 0; padding-left: 20px; color: #666;">
+                                <li>Calculus (AP, College)</li>
+                                <li>Linear Algebra</li>
+                                <li>Statistics</li>
+                                <li>Trigonometry</li>
+                            </ul>
+                        </div>
+                        <div style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                            <h4 style="color: #4caf50; margin-bottom: 8px;">Physics</h4>
+                            <ul style="margin: 0; padding-left: 20px; color: #666;">
+                                <li>Mechanics</li>
+                                <li>Electromagnetism</li>
+                                <li>Thermodynamics</li>
+                                <li>Quantum Physics</li>
+                            </ul>
+                        </div>
+                        <div style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                            <h4 style="color: #4caf50; margin-bottom: 8px;">Test Preparation</h4>
+                            <ul style="margin: 0; padding-left: 20px; color: #666;">
+                                <li>SAT Mathematics</li>
+                                <li>ACT Science</li>
+                                <li>AP Calculus AB/BC</li>
+                                <li>AP Physics</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Experience Tab -->
+                <div id="tutorTabContentExperience" class="tab-content" style="display: none;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Professional Experience</h3>
+                    <div style="position: relative;">
+                        <div style="border-left: 3px solid #4caf50; padding-left: 20px; margin-bottom: 24px;">
+                            <div style="background: #f8f9fa; border-radius: 8px; padding: 16px;">
+                                <h4 style="color: #4caf50; margin-bottom: 8px;">Senior Mathematics Instructor</h4>
+                                <p style="color: #666; margin-bottom: 4px;">Stanford University • 2019 - Present</p>
+                                <p style="color: #666; font-size: 0.9rem;">Teaching advanced mathematics courses and mentoring graduate students</p>
+                            </div>
+                        </div>
+                        <div style="border-left: 3px solid #4caf50; padding-left: 20px; margin-bottom: 24px;">
+                            <div style="background: #f8f9fa; border-radius: 8px; padding: 16px;">
+                                <h4 style="color: #4caf50; margin-bottom: 8px;">Physics Professor</h4>
+                                <p style="color: #666; margin-bottom: 4px;">MIT • 2016 - 2019</p>
+                                <p style="color: #666; font-size: 0.9rem;">Conducted research in quantum mechanics and taught undergraduate physics</p>
+                            </div>
+                        </div>
+                        <div style="border-left: 3px solid #4caf50; padding-left: 20px; margin-bottom: 24px;">
+                            <div style="background: #f8f9fa; border-radius: 8px; padding: 16px;">
+                                <h4 style="color: #4caf50; margin-bottom: 8px;">Mathematics Teacher</h4>
+                                <p style="color: #666; margin-bottom: 4px;">Harvard University • 2014 - 2016</p>
+                                <p style="color: #666; font-size: 0.9rem;">Taught calculus and linear algebra to undergraduate students</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentApplicationId = null;
+
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click outside to close modal functionality
+            const tutorProfileModal = document.getElementById('tutorProfileModal');
+            tutorProfileModal.addEventListener('click', function(e) {
+                if (e.target === tutorProfileModal) {
+                    closeTutorProfileModal();
+                }
+            });
+            
+            // Subject Statistics Chart
+            const subjectStatsCtx = document.getElementById('subjectStatsChart').getContext('2d');
+            new Chart(subjectStatsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mathematics', 'Physics', 'Chemistry', 'English', 'Computer Science'],
+                    datasets: [{
+                        label: 'Number of Lessons',
+                        data: [25, 18, 15, 20, 12],
+                        backgroundColor: '#ffc107',
+                        borderColor: '#ffd54f',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 30
+                        }
+                    }
+                }
+            });
+
+            // Lesson Activity Chart
+            const lessonActivityCtx = document.getElementById('lessonActivityChart').getContext('2d');
+            new Chart(lessonActivityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed', 'Ongoing', 'Scheduled', 'Cancelled'],
+                    datasets: [{
+                        data: [45, 25, 20, 10],
+                        backgroundColor: ['#4caf50', '#ffc107', '#2196f3', '#f44336']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Load applications
+            loadTutorApplications();
+        });
+
+        function showDashboard() {
+            document.getElementById('dashboardSection').style.display = 'block';
+            document.getElementById('tutorApplicationsSection').style.display = 'none';
+            loadTutorApplications(); // Update metrics
+        }
+
+        function showTutorApplications() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('tutorApplicationsSection').style.display = 'block';
+            loadTutorApplications();
+        }
+
+        function loadTutorApplications() {
+            const applications = JSON.parse(localStorage.getItem('tutorApplications') || '[]');
+            renderApplicationsTable(applications);
+            updateMetrics(applications);
+        }
+
+        function renderApplicationsTable(applications) {
+            const tbody = document.getElementById('applicationsTableBody');
+            tbody.innerHTML = applications.map((app, index) => `
+                <tr data-application-id="${app.id}">
+                    <td>${index + 1}</td>
+                    <td>${formatDateTime(app.timestamp)}</td>
+                    <td>${app.fullName}</td>
+                    <td>${app.studentId}</td>
+                    <td><span class="status-${app.status.toLowerCase().replace(' ', '-')}" style="padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; font-weight: 500;">${app.status}</span></td>
+                    <td><button onclick="viewApplication('${app.id}')" style="background: var(--center-primary); color: white; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer;">View</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function updateMetrics(applications) {
+            const pendingCount = applications.filter(app => app.status === 'Pending').length;
+            const approvedCount = applications.filter(app => app.status === 'Approved').length;
+            
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('approvedCount').textContent = approvedCount;
+        }
+
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('en-GB') + ' ' + date.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
+        }
+
+        function viewApplication(applicationId) {
+            const applications = JSON.parse(localStorage.getItem('tutorApplications') || '[]');
+            const application = applications.find(app => app.id === applicationId);
+            
+            if (!application) {
+                alert('Application not found!');
+                return;
+            }
+            
+            currentApplicationId = applicationId;
+            
+            let content = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Personal Information</h4>
+                        <div style="margin-bottom: 8px;"><strong>Full Name:</strong> ${application.fullName}</div>
+                        <div style="margin-bottom: 8px;"><strong>Student ID:</strong> ${application.studentId}</div>
+                        <div style="margin-bottom: 8px;"><strong>Email:</strong> ${application.email}</div>
+                        <div style="margin-bottom: 8px;"><strong>Class:</strong> ${application.class}</div>
+                        <div style="margin-bottom: 8px;"><strong>Date of Birth:</strong> ${application.dateOfBirth}</div>
+                        <div style="margin-bottom: 8px;"><strong>Phone:</strong> ${application.phone}</div>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Academic Information</h4>
+                        <div style="margin-bottom: 8px;"><strong>GPA:</strong> ${application.gpa}</div>
+                        <div style="margin-bottom: 8px;"><strong>Teaching Subjects:</strong> ${application.subjects.join(', ')}</div>
+                        <div style="margin-bottom: 8px;"><strong>Preferred Schedule:</strong> ${application.schedule.join(', ')}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h4 style="color: var(--center-primary); margin-bottom: 16px;">Teaching Experience</h4>
+                    <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin-bottom: 16px;">${application.experience}</div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h4 style="color: var(--center-primary); margin-bottom: 16px;">Certificates & Documents</h4>
+                    <div style="margin-bottom: 8px;"><strong>Uploaded Files:</strong> ${application.certificates.join(', ')}</div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h4 style="color: var(--center-primary); margin-bottom: 16px;">Additional Information</h4>
+                    <div style="background: #f8f9fa; padding: 16px; border-radius: 8px;">${application.description}</div>
+                </div>
+            `;
+            
+            // Add interview details if approved
+            if (application.status === 'Approved' && application.interviewDetails) {
+                content += `
+                    <div style="margin-top: 24px;">
+                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Interview Details</h4>
+                        <div style="background: #e8f5e8; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <div style="margin-bottom: 8px;"><strong>Date:</strong> ${formatDate(application.interviewDetails.date)}</div>
+                            <div style="margin-bottom: 8px;"><strong>Time:</strong> ${formatTime(application.interviewDetails.time)}</div>
+                            <div style="margin-bottom: 8px;"><strong>Scheduled by:</strong> ${application.interviewDetails.scheduledBy}</div>
+                            ${application.interviewDetails.notes ? `<div><strong>Notes:</strong> ${application.interviewDetails.notes}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Add reschedule requests if any
+            if (application.rescheduleRequests && application.rescheduleRequests.length > 0) {
+                content += `
+                    <div style="margin-top: 24px;">
+                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Reschedule Requests</h4>
+                        ${application.rescheduleRequests.map((request, index) => `
+                            <div style="background: #fff8e1; padding: 16px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #ffc107;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <strong>Request #${index + 1}</strong>
+                                    <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; font-weight: 500; 
+                                         background: ${getStatusColor(request.status)}; color: white;">
+                                        ${request.status}
+                                    </span>
+                                </div>
+                                <div style="margin-bottom: 8px;"><strong>Requested Date:</strong> ${formatDate(request.requestedDate)}</div>
+                                <div style="margin-bottom: 8px;"><strong>Requested Time:</strong> ${formatTime(request.requestedTime)}</div>
+                                <div style="margin-bottom: 8px;"><strong>Reason:</strong> ${request.reason}</div>
+                                <div style="margin-bottom: 8px;"><strong>Requested At:</strong> ${formatDateTime(request.requestedAt)}</div>
+                                ${request.status === 'Pending' ? `
+                                    <div style="display: flex; gap: 12px; margin-top: 12px;">
+                                        <button onclick="approveReschedule(${index})" style="background: #4caf50; color: white; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer;">
+                                            Approve
+                                        </button>
+                                        <button onclick="rejectReschedule(${index})" style="background: #f44336; color: white; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer;">
+                                            Reject
+                                        </button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            document.getElementById('applicationDetailsContent').innerHTML = content;
+            
+            // Show/hide action buttons based on status
+            const pendingActions = document.getElementById('pendingActions');
+            if (application.status === 'Pending') {
+                pendingActions.style.display = 'block';
+            } else {
+                pendingActions.style.display = 'none';
+            }
+            
+            // Hide forms initially
+            document.getElementById('interviewForm').style.display = 'none';
+            document.getElementById('additionalInfoForm').style.display = 'none';
+            
+            document.getElementById('applicationDetailsModal').style.display = 'flex';
+        }
+
+        function closeApplicationDetailsModal() {
+            document.getElementById('applicationDetailsModal').style.display = 'none';
+            currentApplicationId = null;
+        }
+
+        function approveApplication() {
+            document.getElementById('interviewForm').style.display = 'block';
+            document.getElementById('additionalInfoForm').style.display = 'none';
+        }
+
+        function requestMoreInfo() {
+            document.getElementById('interviewForm').style.display = 'none';
+            document.getElementById('additionalInfoForm').style.display = 'block';
+        }
+
+        function confirmInterview() {
+            const interviewDate = document.getElementById('interviewDate').value;
+            const interviewTime = document.getElementById('interviewTime').value;
+            const interviewNotes = document.getElementById('interviewNotes').value;
+            
+            if (!interviewDate || !interviewTime) {
+                alert('Please select both date and time for the interview.');
+                return;
+            }
+            
+            // Update application status with detailed interview information
+            const applications = JSON.parse(localStorage.getItem('tutorApplications') || '[]');
+            const applicationIndex = applications.findIndex(app => app.id === currentApplicationId);
+            
+            if (applicationIndex !== -1) {
+                applications[applicationIndex].status = 'Approved';
+                applications[applicationIndex].interviewDetails = {
+                    date: interviewDate,
+                    time: interviewTime,
+                    notes: interviewNotes,
+                    scheduledBy: 'Center Admin',
+                    scheduledAt: new Date().toISOString()
+                };
+                applications[applicationIndex].rescheduleRequests = [];
+                
+                localStorage.setItem('tutorApplications', JSON.stringify(applications));
+                
+                alert('Interview scheduled successfully! Application status updated to Approved.');
+                closeApplicationDetailsModal();
+                loadTutorApplications();
+            }
+        }
+
+        function sendInfoRequest() {
+            const additionalInfo = document.getElementById('additionalInfo').value;
+            
+            if (!additionalInfo.trim()) {
+                alert('Please provide the required additional information.');
+                return;
+            }
+            
+            // Update application status
+            const applications = JSON.parse(localStorage.getItem('tutorApplications') || '[]');
+            const applicationIndex = applications.findIndex(app => app.id === currentApplicationId);
+            
+            if (applicationIndex !== -1) {
+                applications[applicationIndex].status = 'Needs Info';
+                applications[applicationIndex].additionalInfo = additionalInfo;
+                
+                localStorage.setItem('tutorApplications', JSON.stringify(applications));
+                
+                alert('Information request sent successfully! Application status updated to Needs Info.');
+                closeApplicationDetailsModal();
+                loadTutorApplications();
+            }
+        }
+
+        function approveReschedule(requestIndex) {
+            const applications = JSON.parse(localStorage.getItem('tutorApplications') || '[]');
+            const applicationIndex = applications.findIndex(app => app.id === currentApplicationId);
+            
+            if (applicationIndex !== -1 && applications[applicationIndex].rescheduleRequests[requestIndex]) {
+                applications[applicationIndex].rescheduleRequests[requestIndex].status = 'Approved';
+                
+                // Update interview details with new date/time
+                const request = applications[applicationIndex].rescheduleRequests[requestIndex];
+                applications[applicationIndex].interviewDetails = {
+                    date: request.requestedDate,
+                    time: request.requestedTime,
+                    notes: `Rescheduled from original date. Reason: ${request.reason}`,
+                    scheduledBy: 'Center Admin',
+                    scheduledAt: new Date().toISOString()
+                };
+                
+                localStorage.setItem('tutorApplications', JSON.stringify(applications));
+                
+                alert('Reschedule request approved! Interview details updated.');
+                viewApplication(currentApplicationId); // Refresh the view
+            }
+        }
+        
+        function rejectReschedule(requestIndex) {
+            const applications = JSON.parse(localStorage.getItem('tutorApplications') || '[]');
+            const applicationIndex = applications.findIndex(app => app.id === currentApplicationId);
+            
+            if (applicationIndex !== -1 && applications[applicationIndex].rescheduleRequests[requestIndex]) {
+                applications[applicationIndex].rescheduleRequests[requestIndex].status = 'Rejected';
+                
+                localStorage.setItem('tutorApplications', JSON.stringify(applications));
+                
+                alert('Reschedule request rejected.');
+                viewApplication(currentApplicationId); // Refresh the view
+            }
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB');
+        }
+        
+        function formatTime(timeString) {
+            const time = timeString.split(':');
+            const hour = parseInt(time[0]);
+            const minute = time[1];
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+            return `${displayHour}:${minute} ${period}`;
+        }
+        
+        function formatDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            return date.toLocaleDateString('en-GB') + ' ' + date.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
+        }
+        
+        function getStatusColor(status) {
+            switch(status) {
+                case 'Pending': return '#ffc107';
+                case 'Approved': return '#4caf50';
+                case 'Rejected': return '#f44336';
+                default: return '#666';
+            }
+        }
+        
+        function refreshApplications() {
+            loadTutorApplications();
+        }
+        
+        // Manage Tutors Functions
+        function showManageTutorsModal() {
+            const modal = document.getElementById('manageTutorsModal');
+            modal.style.display = 'flex';
+            loadTutorsList();
+        }
+        
+        function closeManageTutorsModal() {
+            const modal = document.getElementById('manageTutorsModal');
+            modal.style.display = 'none';
+        }
+        
+        function loadTutorsList() {
+            const tableBody = document.getElementById('tutorsTableBody');
+            
+            // Demo tutors data
+            const tutors = [
+                { id: 'T001', name: 'Dr. Sarah Johnson', subjects: 'Mathematics, Physics', rating: 4.8, status: 'Active', students: 24 },
+                { id: 'T002', name: 'Prof. Michael Chen', subjects: 'Computer Science', rating: 4.9, status: 'Active', students: 18 },
+                { id: 'T003', name: 'Dr. Emily Davis', subjects: 'Chemistry, Biology', rating: 4.7, status: 'Active', students: 22 },
+                { id: 'T004', name: 'Prof. David Wilson', subjects: 'English, Literature', rating: 4.6, status: 'Inactive', students: 15 },
+                { id: 'T005', name: 'Dr. Lisa Brown', subjects: 'Economics, Statistics', rating: 4.5, status: 'Active', students: 20 }
+            ];
+            
+            tableBody.innerHTML = '';
+            
+            tutors.forEach(tutor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${tutor.id}</td>
+                    <td>${tutor.name}</td>
+                    <td>${tutor.subjects}</td>
+                    <td>
+                        <span style="color: #ffc107; font-weight: 600;">
+                            <i class="fas fa-star"></i> ${tutor.rating}
+                        </span>
+                    </td>
+                    <td>
+                        <span style="color: ${tutor.status === 'Active' ? '#4caf50' : '#f44336'}; font-weight: 600;">
+                            ${tutor.status}
+                        </span>
+                    </td>
+                    <td>${tutor.students}</td>
+                    <td>
+                        <button onclick="viewTutorProfile('${tutor.id}')" style="background: #2196f3; color: white; border: none; border-radius: 4px; padding: 6px 12px; font-size: 0.9rem; cursor: pointer;">
+                            <i class="fas fa-eye"></i> View Profile
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function viewTutorProfile(tutorId) {
+            const modal = document.getElementById('tutorProfileModal');
+            modal.style.display = 'flex';
+            
+            // Load tutor data based on ID
+            loadTutorProfileData(tutorId);
+            
+            // Set default tab to About
+            switchTutorTab('about');
+        }
+        
+        function closeTutorProfileModal() {
+            const modal = document.getElementById('tutorProfileModal');
+            modal.style.display = 'none';
+        }
+        
+        function loadTutorProfileData(tutorId) {
+            // Demo tutor data - you can expand this with more tutors
+            const tutorData = {
+                'T001': {
+                    name: 'Dr. Sarah Johnson',
+                    nationality: 'American',
+                    rating: '4.9',
+                    students: '1.2K',
+                    teaches: 'Intermediate | Upper Intermediate | Advanced',
+                    tests: 'SAT, ACT, AP Calculus',
+                    industry: 'Education, Research',
+                    introduction: "I'm from the United States and have been teaching mathematics and physics for eight years. I'm passionate about simplifying complex concepts and helping students understand real-world applications. My teaching style focuses on building strong foundations and developing problem-solving skills.",
+                    preferences: 'Open to new students',
+                    languages: 'English (Native)\nSpanish (Conversational)',
+                    industryFamiliarity: 'Education\nResearch',
+                    specialties: {
+                        mathematics: ['Calculus (AP, College)', 'Linear Algebra', 'Statistics', 'Trigonometry'],
+                        physics: ['Mechanics', 'Electromagnetism', 'Thermodynamics', 'Quantum Physics'],
+                        testPrep: ['SAT Mathematics', 'ACT Science', 'AP Calculus AB/BC', 'AP Physics']
+                    },
+                    experience: [
+                        { title: 'Senior Mathematics Instructor', institution: 'Stanford University', period: '2019 - Present', description: 'Teaching advanced mathematics courses and mentoring graduate students' },
+                        { title: 'Physics Professor', institution: 'MIT', period: '2016 - 2019', description: 'Conducted research in quantum mechanics and taught undergraduate physics' },
+                        { title: 'Mathematics Teacher', institution: 'Harvard University', period: '2014 - 2016', description: 'Taught calculus and linear algebra to undergraduate students' }
+                    ]
+                },
+                'T002': {
+                    name: 'Prof. Michael Chen',
+                    nationality: 'Chinese-American',
+                    rating: '4.9',
+                    students: '856',
+                    teaches: 'Beginner | Intermediate | Advanced',
+                    tests: 'AP Computer Science, SAT Math',
+                    industry: 'Technology, Education',
+                    introduction: "I'm a computer science professor with over 10 years of experience in software development and teaching. I specialize in making complex programming concepts accessible to students of all levels.",
+                    preferences: 'Open to new students',
+                    languages: 'English (Native)\nMandarin (Fluent)',
+                    industryFamiliarity: 'Technology\nEducation',
+                    specialties: {
+                        computerScience: ['Python Programming', 'Java Development', 'Data Structures', 'Algorithms'],
+                        webDevelopment: ['HTML/CSS', 'JavaScript', 'React', 'Node.js'],
+                        databases: ['SQL', 'MongoDB', 'Database Design']
+                    },
+                    experience: [
+                        { title: 'Computer Science Professor', institution: 'UC Berkeley', period: '2020 - Present', description: 'Teaching computer science courses and leading research in AI' },
+                        { title: 'Senior Software Engineer', institution: 'Google', period: '2017 - 2020', description: 'Developed machine learning algorithms and mentored junior developers' },
+                        { title: 'Software Developer', institution: 'Microsoft', period: '2015 - 2017', description: 'Worked on cloud computing solutions and database systems' }
+                    ]
+                },
+                'T003': {
+                    name: 'Dr. Emily Davis',
+                    nationality: 'British',
+                    rating: '4.7',
+                    students: '1.1K',
+                    teaches: 'Intermediate | Advanced',
+                    tests: 'A-Level Chemistry, IB Biology',
+                    industry: 'Research, Healthcare',
+                    introduction: "I'm a research scientist and educator with expertise in chemistry and biology. I love helping students understand the fascinating world of molecular science and its applications in medicine.",
+                    preferences: 'Open to new students',
+                    languages: 'English (Native)\nFrench (Conversational)',
+                    industryFamiliarity: 'Research\nHealthcare',
+                    specialties: {
+                        chemistry: ['Organic Chemistry', 'Inorganic Chemistry', 'Physical Chemistry', 'Biochemistry'],
+                        biology: ['Cell Biology', 'Molecular Biology', 'Genetics', 'Ecology'],
+                        laboratory: ['Lab Techniques', 'Data Analysis', 'Scientific Writing']
+                    },
+                    experience: [
+                        { title: 'Research Scientist', institution: 'Oxford University', period: '2018 - Present', description: 'Leading research in molecular biology and drug discovery' },
+                        { title: 'Chemistry Lecturer', institution: 'Imperial College London', period: '2016 - 2018', description: 'Taught undergraduate chemistry and supervised research projects' },
+                        { title: 'Postdoctoral Researcher', institution: 'Cambridge University', period: '2014 - 2016', description: 'Conducted research in biochemistry and cell signaling' }
+                    ]
+                }
+            };
+            
+            const tutor = tutorData[tutorId] || tutorData['T001']; // Default to T001 if not found
+            
+            // Update profile header
+            document.getElementById('profileTutorName').textContent = tutor.name;
+            
+            // Update information tags
+            document.getElementById('profileTeaches').textContent = tutor.teaches;
+            document.getElementById('profileTests').textContent = tutor.tests;
+            document.getElementById('profileIndustry').textContent = tutor.industry;
+            
+            // Update About tab content
+            const aboutContent = document.getElementById('tutorTabContentAbout');
+            aboutContent.innerHTML = `
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Hello!</h3>
+                    <div style="margin-bottom: 16px;">
+                        <p style="line-height: 1.6; color: #666;">${tutor.introduction}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Student Preferences</h3>
+                    <p style="color: #666;">${tutor.preferences}</p>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Languages</h3>
+                    <p style="color: #666;">${tutor.languages.replace('\n', '<br>')}</p>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Industry Familiarity</h3>
+                    <p style="color: #666;">${tutor.industryFamiliarity.replace('\n', '<br>')}</p>
+                </div>
+            `;
+            
+            // Update Specialties tab content
+            const specialtiesContent = document.getElementById('tutorTabContentSpecialties');
+            let specialtiesHTML = '<h3 style="color: #333; margin-bottom: 16px;">Teaching Specialties</h3>';
+            specialtiesHTML += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">';
+            
+            Object.keys(tutor.specialties).forEach(category => {
+                const categoryName = category.charAt(0).toUpperCase() + category.slice(1).replace(/([A-Z])/g, ' $1');
+                specialtiesHTML += `
+                    <div style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                        <h4 style="color: #4caf50; margin-bottom: 8px;">${categoryName}</h4>
+                        <ul style="margin: 0; padding-left: 20px; color: #666;">
+                            ${tutor.specialties[category].map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            specialtiesHTML += '</div>';
+            specialtiesContent.innerHTML = specialtiesHTML;
+            
+            // Update Experience tab content
+            const experienceContent = document.getElementById('tutorTabContentExperience');
+            let experienceHTML = '<h3 style="color: #333; margin-bottom: 16px;">Professional Experience</h3>';
+            experienceHTML += '<div style="position: relative;">';
+            
+            tutor.experience.forEach(exp => {
+                experienceHTML += `
+                    <div style="border-left: 3px solid #4caf50; padding-left: 20px; margin-bottom: 24px;">
+                        <div style="background: #f8f9fa; border-radius: 8px; padding: 16px;">
+                            <h4 style="color: #4caf50; margin-bottom: 8px;">${exp.title}</h4>
+                            <p style="color: #666; margin-bottom: 4px;">${exp.institution} • ${exp.period}</p>
+                            <p style="color: #666; font-size: 0.9rem;">${exp.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            experienceHTML += '</div>';
+            experienceContent.innerHTML = experienceHTML;
+        }
+        
+        function switchTutorTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('#tutorProfileModal .tab-content');
+            tabContents.forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('#tutorProfileModal .profile-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                tab.style.fontWeight = '500';
+                tab.style.color = '#666';
+                tab.style.borderBottom = '3px solid transparent';
+            });
+            
+            // Show selected tab content
+            const selectedContent = document.getElementById(`tutorTabContent${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+            if (selectedContent) {
+                selectedContent.style.display = 'block';
+            }
+            
+            // Activate selected tab
+            const selectedTab = document.getElementById(`tutorTab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+                selectedTab.style.fontWeight = '600';
+                selectedTab.style.color = '#4caf50';
+                selectedTab.style.borderBottom = '3px solid #4caf50';
+            }
+        }
+        
+        // Manage Lessons Functions
+        function showManageLessonsModal() {
+            const modal = document.getElementById('manageLessonsModal');
+            modal.style.display = 'flex';
+            loadLessonsList();
+        }
+        
+        function closeManageLessonsModal() {
+            const modal = document.getElementById('manageLessonsModal');
+            modal.style.display = 'none';
+        }
+        
+        function loadLessonsList() {
+            const tableBody = document.getElementById('lessonsTableBody');
+            
+            // Demo lessons data
+            const lessons = [
+                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled' },
+                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed' },
+                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled' },
+                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled' },
+                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled' }
+            ];
+            
+            tableBody.innerHTML = '';
+            
+            lessons.forEach(lesson => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${lesson.id}</td>
+                    <td>${lesson.subject}</td>
+                    <td>${lesson.tutor}</td>
+                    <td>${lesson.student}</td>
+                    <td>${lesson.date} ${lesson.time}</td>
+                    <td>
+                        <span style="color: ${getLessonStatusColor(lesson.status)}; font-weight: 600;">
+                            ${lesson.status}
+                        </span>
+                    </td>
+                    <td>
+                        <button onclick="viewLessonDetails('${lesson.id}')" style="background: #2196f3; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; margin-right: 4px;">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button onclick="editLesson('${lesson.id}')" style="background: #ff9800; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; margin-right: 4px;">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button onclick="cancelLesson('${lesson.id}')" style="background: #f44336; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer;">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function getLessonStatusColor(status) {
+            switch(status) {
+                case 'Scheduled': return '#2196f3';
+                case 'Completed': return '#4caf50';
+                case 'Cancelled': return '#f44336';
+                default: return '#666';
+            }
+        }
+        
+        function viewLessonDetails(lessonId) {
+            const lessons = [
+                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 301', notes: 'Advanced calculus topics' },
+                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed', duration: '60 minutes', location: 'Room 301', notes: 'Quantum mechanics introduction' },
+                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled', duration: '60 minutes', location: 'Lab 205', notes: 'Data structures and algorithms' },
+                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled', duration: '60 minutes', location: 'Lab 102', notes: 'Organic chemistry basics' },
+                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 201', notes: 'Academic writing skills' }
+            ];
+            
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) {
+                alert('Lesson not found!');
+                return;
+            }
+            
+            const modal = document.getElementById('lessonDetailsModal');
+            const content = document.getElementById('lessonDetailsContent');
+            
+            content.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Lesson Information</h4>
+                        <div style="margin-bottom: 8px;"><strong>Lesson ID:</strong> ${lesson.id}</div>
+                        <div style="margin-bottom: 8px;"><strong>Subject:</strong> ${lesson.subject}</div>
+                        <div style="margin-bottom: 8px;"><strong>Duration:</strong> ${lesson.duration}</div>
+                        <div style="margin-bottom: 8px;"><strong>Location:</strong> ${lesson.location}</div>
+                        <div style="margin-bottom: 8px;"><strong>Status:</strong> 
+                            <span style="color: ${getLessonStatusColor(lesson.status)}; font-weight: 600;">${lesson.status}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Schedule Details</h4>
+                        <div style="margin-bottom: 8px;"><strong>Date:</strong> ${lesson.date}</div>
+                        <div style="margin-bottom: 8px;"><strong>Time:</strong> ${lesson.time}</div>
+                        <div style="margin-bottom: 8px;"><strong>Tutor:</strong> ${lesson.tutor}</div>
+                        <div style="margin-bottom: 8px;"><strong>Student:</strong> ${lesson.student}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h4 style="color: var(--center-primary); margin-bottom: 16px;">Notes</h4>
+                    <div style="background: #f8f9fa; padding: 16px; border-radius: 8px;">${lesson.notes}</div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeLessonDetailsModal() {
+            const modal = document.getElementById('lessonDetailsModal');
+            modal.style.display = 'none';
+        }
+        
+        function editLesson(lessonId) {
+            const lessons = [
+                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 301', notes: 'Advanced calculus topics' },
+                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed', duration: '60 minutes', location: 'Room 301', notes: 'Quantum mechanics introduction' },
+                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled', duration: '60 minutes', location: 'Lab 205', notes: 'Data structures and algorithms' },
+                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled', duration: '60 minutes', location: 'Lab 102', notes: 'Organic chemistry basics' },
+                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 201', notes: 'Academic writing skills' }
+            ];
+            
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) {
+                alert('Lesson not found!');
+                return;
+            }
+            
+            const modal = document.getElementById('editLessonModal');
+            const content = document.getElementById('editLessonContent');
+            
+            content.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Subject: <span style="color:#ff0000;">*</span></label>
+                        <select id="editSubject" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <option value="Mathematics" ${lesson.subject === 'Mathematics' ? 'selected' : ''}>Mathematics</option>
+                            <option value="Physics" ${lesson.subject === 'Physics' ? 'selected' : ''}>Physics</option>
+                            <option value="Chemistry" ${lesson.subject === 'Chemistry' ? 'selected' : ''}>Chemistry</option>
+                            <option value="Computer Science" ${lesson.subject === 'Computer Science' ? 'selected' : ''}>Computer Science</option>
+                            <option value="English" ${lesson.subject === 'English' ? 'selected' : ''}>English</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Tutor: <span style="color:#ff0000;">*</span></label>
+                        <select id="editTutor" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <option value="Dr. Sarah Johnson" ${lesson.tutor === 'Dr. Sarah Johnson' ? 'selected' : ''}>Dr. Sarah Johnson</option>
+                            <option value="Prof. Michael Chen" ${lesson.tutor === 'Prof. Michael Chen' ? 'selected' : ''}>Prof. Michael Chen</option>
+                            <option value="Dr. Emily Davis" ${lesson.tutor === 'Dr. Emily Davis' ? 'selected' : ''}>Dr. Emily Davis</option>
+                            <option value="Prof. David Wilson" ${lesson.tutor === 'Prof. David Wilson' ? 'selected' : ''}>Prof. David Wilson</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Date: <span style="color:#ff0000;">*</span></label>
+                        <input type="date" id="editDate" value="${lesson.date}" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Time: <span style="color:#ff0000;">*</span></label>
+                        <input type="time" id="editTime" value="${lesson.time}" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Duration:</label>
+                        <select id="editDuration" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <option value="30 minutes" ${lesson.duration === '30 minutes' ? 'selected' : ''}>30 minutes</option>
+                            <option value="60 minutes" ${lesson.duration === '60 minutes' ? 'selected' : ''}>60 minutes</option>
+                            <option value="90 minutes" ${lesson.duration === '90 minutes' ? 'selected' : ''}>90 minutes</option>
+                            <option value="120 minutes" ${lesson.duration === '120 minutes' ? 'selected' : ''}>120 minutes</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Location:</label>
+                        <input type="text" id="editLocation" value="${lesson.location}" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <label style="font-weight: 500; display: block; margin-bottom: 8px;">Notes:</label>
+                    <textarea id="editNotes" rows="3" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; resize: vertical;">${lesson.notes}</textarea>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                    <button onclick="closeEditLessonModal()" style="background: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                        Cancel
+                    </button>
+                    <button onclick="saveLessonChanges('${lessonId}')" style="background: var(--center-primary); color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeEditLessonModal() {
+            const modal = document.getElementById('editLessonModal');
+            modal.style.display = 'none';
+        }
+        
+        function saveLessonChanges(lessonId) {
+            const subject = document.getElementById('editSubject').value;
+            const tutor = document.getElementById('editTutor').value;
+            const date = document.getElementById('editDate').value;
+            const time = document.getElementById('editTime').value;
+            const duration = document.getElementById('editDuration').value;
+            const location = document.getElementById('editLocation').value;
+            const notes = document.getElementById('editNotes').value;
+            
+            if (!subject || !tutor || !date || !time) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            
+            // Simulate saving changes
+            alert(`Lesson ${lessonId} updated successfully!\n\nNew Details:\nSubject: ${subject}\nTutor: ${tutor}\nDate: ${date}\nTime: ${time}\nDuration: ${duration}\nLocation: ${location}\nNotes: ${notes}`);
+            
+            closeEditLessonModal();
+            loadLessonsList(); // Refresh the table
+        }
+        
+        function cancelLesson(lessonId) {
+            const lessons = [
+                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled' },
+                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed' },
+                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled' },
+                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled' },
+                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled' }
+            ];
+            
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) {
+                alert('Lesson not found!');
+                return;
+            }
+            
+            if (lesson.status === 'Completed') {
+                alert('Cannot cancel a completed lesson!');
+                return;
+            }
+            
+            if (lesson.status === 'Cancelled') {
+                alert('This lesson is already cancelled!');
+                return;
+            }
+            
+            const reason = prompt('Please provide a reason for cancellation:');
+            if (reason === null) {
+                return; // User cancelled
+            }
+            
+            if (!reason.trim()) {
+                alert('Please provide a reason for cancellation!');
+                return;
+            }
+            
+            // Simulate cancelling the lesson
+            alert(`Lesson ${lessonId} cancelled successfully!\n\nCancellation Details:\nSubject: ${lesson.subject}\nTutor: ${lesson.tutor}\nStudent: ${lesson.student}\nDate: ${lesson.date} ${lesson.time}\nReason: ${reason}\n\nNotification will be sent to both tutor and student.`);
+            
+            // Update the lesson status in the demo data
+            lesson.status = 'Cancelled';
+            loadLessonsList(); // Refresh the table
+        }
+    </script>
+</body>
+</html> 
