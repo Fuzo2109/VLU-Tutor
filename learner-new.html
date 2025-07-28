@@ -311,14 +311,7 @@
                             <div style="margin-bottom: 16px;">
                                 <label for="subjects" style="font-weight: 500; font-size: 1.1rem; display: block; margin-bottom: 8px;">Subjects you can teach: <span style="color:#ff0000;">*</span></label>
                                 <select id="subjects" name="subjects" multiple required style="width:100%;padding:12px 16px;min-height:80px;font-size:1.1rem;border:1px solid #e0e0e0;border-radius:8px;background:#fafafa;">
-                                    <option value="mathematics">Mathematics</option>
-                                    <option value="physics">Physics</option>
-                                    <option value="chemistry">Chemistry</option>
-                                    <option value="english">English</option>
-                                    <option value="cs">Computer Science</option>
-                                    <option value="biology">Biology</option>
-                                    <option value="economics">Economics</option>
-                                    <option value="other">Other</option>
+                                    <!-- Subjects will be loaded dynamically from Center -->
                                 </select>
                                 <div id="subjects-error" style="color:#ff0000;font-size:1rem;margin-top:6px;display:none;">Please select at least one subject</div>
                             </div>
@@ -808,6 +801,9 @@
             console.log('Opening Apply Tutor Modal...');
             document.getElementById('applyTutorModal').style.display = 'flex';
             console.log('Apply Tutor Modal opened successfully');
+            
+            // Load available subjects from Center
+            loadAvailableSubjects();
             
             // Reset form and remove any existing preview content
             resetTutorApplicationForm();
@@ -4289,6 +4285,40 @@ Your request has been sent to the tutor. You will be notified when they respond.
                 console.log('Starting lesson:', lessonId);
                 // Pass userType=student to lesson.html
                 window.location.href = 'lesson.html?userType=student';
+            }
+        }
+        
+        // Load available subjects from Center
+        function loadAvailableSubjects() {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const activeSubjects = subjects.filter(s => s.status === 'Active');
+            
+            const subjectsSelect = document.getElementById('subjects');
+            subjectsSelect.innerHTML = '';
+            
+            if (activeSubjects.length === 0) {
+                // If no subjects from Center, use default subjects
+                const defaultSubjects = [
+                    { id: "SUB001", name: "Mathematics", code: "MATH" },
+                    { id: "SUB002", name: "Physics", code: "PHYS" },
+                    { id: "SUB003", name: "Chemistry", code: "CHEM" },
+                    { id: "SUB004", name: "Computer Science", code: "CS" },
+                    { id: "SUB005", name: "English", code: "ENG" }
+                ];
+                
+                defaultSubjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.id;
+                    option.textContent = subject.name;
+                    subjectsSelect.appendChild(option);
+                });
+            } else {
+                activeSubjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.id;
+                    option.textContent = subject.name;
+                    subjectsSelect.appendChild(option);
+                });
             }
         }
         
