@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson - Microsoft Teams Simulation</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/learner-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #e3f2fd;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .teams-topbar {
+            background: #5059c9;
+            color: #fff;
+            padding: 16px 32px;
+            font-size: 1.15rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .teams-main {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+        }
+        .teams-video-area {
+            flex: 2;
+            background: #fff;
+            border-radius: 0 0 0 18px;
+            margin: 0 0 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .video-placeholder {
+            width: 340px;
+            height: 220px;
+            background: #e3f2fd;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1976d2;
+            font-size: 2.2rem;
+            font-weight: bold;
+            box-shadow: 0 2px 16px rgba(25,118,210,0.08);
+        }
+        .teams-chat {
+            flex: 1;
+            background: #f7f7f7;
+            border-radius: 0 0 18px 0;
+            margin: 0 32px 0 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 260px;
+            max-width: 340px;
+        }
+        .chat-header {
+            padding: 14px 18px;
+            background: #fff;
+            border-bottom: 1px solid #e3f2fd;
+            font-weight: 600;
+            color: #5059c9;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 10px 16px;
+            border-radius: 14px;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+        .chat-message.tutor {
+            background: #e3f2fd;
+            align-self: flex-start;
+            color: #1976d2;
+        }
+        .chat-message.learner {
+            background: #1976d2;
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 12px 18px;
+            background: #fff;
+            border-top: 1px solid #e3f2fd;
+        }
+        .chat-input-area input {
+            flex: 1;
+            border: 1px solid #e3f2fd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .chat-input-area button {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            margin-left: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        .chat-input-area button:hover {
+            background: #1251a3;
+        }
+        .teams-bottombar {
+            background: #fff;
+            padding: 18px 0 18px 0;
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            border-top: 1px solid #e3f2fd;
+        }
+        .teams-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: none;
+            border-radius: 50%;
+            width: 54px;
+            height: 54px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+        }
+        .teams-btn.active, .teams-btn:active {
+            background: #1976d2;
+            color: #fff;
+        }
+        .teams-btn.end {
+            background: #ffebee;
+            color: #b11f24;
+        }
+        .teams-btn.end:hover {
+            background: #b11f24;
+            color: #fff;
+        }
+        /* Rating Modal */
+        #ratingModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.25);
+            align-items: center;
+            justify-content: center;
+        }
+        .rating-frame {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(25, 118, 210, 0.10);
+            padding: 36px 32px 28px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 320px;
+        }
+        .rating-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 18px;
+        }
+        .stars {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .star {
+            font-size: 2rem;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: color 0.18s;
+        }
+        .star.selected {
+            color: #ffd600;
+        }
+        .rating-comment {
+            width: 100%;
+            border: 1px solid #e3f2fd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            resize: none;
+        }
+        .submit-rating-btn {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 28px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        .submit-rating-btn:hover {
+            background: #1251a3;
+        }
+        
+        /* Countdown and Warning Styles */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Enhanced Rating Styles */
+        .rating-criteria {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e3f2fd;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .rating-criteria-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1976d2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rating-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .toggle-btn {
+            padding: 6px 12px;
+            border: 1px solid #1976d2;
+            background: white;
+            color: #1976d2;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .toggle-btn.active {
+            background: #1976d2;
+            color: white;
+        }
+        
+        .rating-summary {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="teams-topbar">
+        <span><i class="fab fa-microsoft"></i> Microsoft Teams - Lesson: Calculus I</span>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div id="countdown" style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem;">
+                    <i class="fas fa-clock"></i> <span id="countdownText">60:00</span>
+                </div>
+                <div id="lessonEndInfo" style="background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 15px; font-size: 0.8rem; text-align: center;">
+                    <i class="fas fa-info-circle"></i> <span id="endTimeText">Sau 60 phút nữa lesson sẽ đóng</span>
+                </div>
+            </div>
+            <div id="lessonWarning" style="display: none; background: #ff9800; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; animation: pulse 2s infinite;">
+                <i class="fas fa-exclamation-triangle"></i> Lesson sẽ kết thúc trong 10 phút nữa!
+            </div>
+            <span><i class="fas fa-user-graduate"></i> Nguyen Van A</span>
+        </div>
+    </div>
+    <div class="teams-main">
+        <div class="teams-video-area">
+            <div class="video-placeholder">
+                <i class="fas fa-chalkboard-teacher"></i>&nbsp;Live Video
+            </div>
+        </div>
+        <div class="teams-chat">
+            <div class="chat-header">Chat</div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message tutor">Hello, welcome to the lesson!</div>
+                <div class="chat-message learner">Thank you, teacher!</div>
+            </div>
+            <form class="chat-input-area" onsubmit="sendMessage(event)">
+                <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off" />
+                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="teams-bottombar">
+        <button class="teams-btn" id="btnShare" title="Share Screen"><i class="fas fa-desktop"></i></button>
+        <button class="teams-btn" id="btnMute" title="Mute/Unmute"><i class="fas fa-microphone"></i></button>
+        <button class="teams-btn" id="btnChat" title="Chat"><i class="fas fa-comments"></i></button>
+        <button class="teams-btn end" id="btnEnd" title="End Lesson"><i class="fas fa-phone-slash"></i></button>
+    </div>
+    <!-- Rating Modal -->
+    <div id="ratingModal">
+        <div class="rating-frame">
+            <div class="rating-title">Rating</div>
+            
+            <!-- Knowledge Rating -->
+            <div class="rating-criteria">
+                <div class="rating-criteria-title">
+                    <i class="fas fa-brain"></i> Knowledge & Expertise
+                </div>
+                <div class="stars" id="stars-knowledge">
+                    <span class="star" data-criteria="knowledge" data-value="1">&#9733;</span>
+                    <span class="star" data-criteria="knowledge" data-value="2">&#9733;</span>
+                    <span class="star" data-criteria="knowledge" data-value="3">&#9733;</span>
+                    <span class="star" data-criteria="knowledge" data-value="4">&#9733;</span>
+                    <span class="star" data-criteria="knowledge" data-value="5">&#9733;</span>
+                </div>
+                <div class="rating-toggle">
+                    <span class="toggle-btn" data-criteria="knowledge" data-value="excellent">Excellent</span>
+                    <span class="toggle-btn" data-criteria="knowledge" data-value="good">Good</span>
+                    <span class="toggle-btn" data-criteria="knowledge" data-value="average">Average</span>
+                    <span class="toggle-btn" data-criteria="knowledge" data-value="poor">Poor</span>
+                </div>
+            </div>
+            
+            <!-- Communication Rating -->
+            <div class="rating-criteria">
+                <div class="rating-criteria-title">
+                    <i class="fas fa-comments"></i> Communication Skills
+                </div>
+                <div class="stars" id="stars-communication">
+                    <span class="star" data-criteria="communication" data-value="1">&#9733;</span>
+                    <span class="star" data-criteria="communication" data-value="2">&#9733;</span>
+                    <span class="star" data-criteria="communication" data-value="3">&#9733;</span>
+                    <span class="star" data-criteria="communication" data-value="4">&#9733;</span>
+                    <span class="star" data-criteria="communication" data-value="5">&#9733;</span>
+                </div>
+                <div class="rating-toggle">
+                    <span class="toggle-btn" data-criteria="communication" data-value="excellent">Clear</span>
+                    <span class="toggle-btn" data-criteria="communication" data-value="good">Understandable</span>
+                    <span class="toggle-btn" data-criteria="communication" data-value="average">Somewhat Clear</span>
+                    <span class="toggle-btn" data-criteria="communication" data-value="poor">Unclear</span>
+                </div>
+            </div>
+            
+            <!-- Supportiveness Rating -->
+            <div class="rating-criteria">
+                <div class="rating-criteria-title">
+                    <i class="fas fa-hands-helping"></i> Supportiveness & Patience
+                </div>
+                <div class="stars" id="stars-support">
+                    <span class="star" data-criteria="support" data-value="1">&#9733;</span>
+                    <span class="star" data-criteria="support" data-value="2">&#9733;</span>
+                    <span class="star" data-criteria="support" data-value="3">&#9733;</span>
+                    <span class="star" data-criteria="support" data-value="4">&#9733;</span>
+                    <span class="star" data-criteria="support" data-value="5">&#9733;</span>
+                </div>
+                <div class="rating-toggle">
+                    <span class="toggle-btn" data-criteria="support" data-value="excellent">Very Patient</span>
+                    <span class="toggle-btn" data-criteria="support" data-value="good">Patient</span>
+                    <span class="toggle-btn" data-criteria="support" data-value="average">Somewhat Patient</span>
+                    <span class="toggle-btn" data-criteria="support" data-value="poor">Impatient</span>
+                </div>
+            </div>
+            
+            <!-- Rating Summary -->
+            <div class="rating-summary" id="ratingSummary" style="display: none;">
+                <i class="fas fa-chart-bar"></i> <span id="summaryText">Rating Summary</span>
+            </div>
+            
+            <textarea class="rating-comment" id="ratingComment" rows="3" placeholder="Leave a comment (optional)..."></textarea>
+            <button class="submit-rating-btn" onclick="submitRating()">Submit Rating</button>
+        </div>
+    </div>
+    <script>
+        // Countdown Timer Variables
+        let lessonDuration = 60 * 60; // 60 minutes in seconds
+        let timeRemaining = lessonDuration;
+        let countdownInterval;
+        let warningShown = false;
+        
+        // User type detection (you can modify this based on your authentication system)
+        let userType = 'student'; // Default to student, can be 'student' or 'tutor'
+        
+        // Function to detect user type (you can customize this based on your login system)
+        function detectUserType() {
+            // Method 1: Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const typeFromUrl = urlParams.get('userType');
+            if (typeFromUrl) {
+                userType = typeFromUrl;
+                console.log('User type from URL parameter:', userType);
+                return;
+            }
+            
+            // Method 2: Check localStorage (if you store user info there)
+            const storedUserType = localStorage.getItem('userType');
+            if (storedUserType) {
+                userType = storedUserType;
+                console.log('User type from localStorage:', userType);
+                return;
+            }
+            
+            // Method 3: Check if user is tutor based on some condition
+            // For demo purposes, let's check if the user name contains "Dr." or "Professor"
+            const userName = document.querySelector('.teams-topbar span:last-child').textContent;
+            if (userName.includes('Dr.') || userName.includes('Professor')) {
+                userType = 'tutor';
+                console.log('User type detected from name:', userType);
+            }
+            
+            console.log('Final detected user type:', userType);
+        }
+        
+        // Function to set user type for testing (you can call this from console)
+        function setUserType(type) {
+            userType = type;
+            localStorage.setItem('userType', type);
+            console.log('User type set to:', type);
+        }
+        
+        // Function to debug current user type
+        function debugUserType() {
+            console.log('=== USER TYPE DEBUG ===');
+            console.log('Current URL:', window.location.href);
+            console.log('URL parameters:', new URLSearchParams(window.location.search).toString());
+            console.log('localStorage userType:', localStorage.getItem('userType'));
+            console.log('Current userType variable:', userType);
+            console.log('======================');
+        }
+        
+        // Initialize countdown timer
+        function startCountdown() {
+            countdownInterval = setInterval(() => {
+                timeRemaining--;
+                updateCountdownDisplay();
+                
+                // Show warning when 10 minutes remaining
+                if (timeRemaining <= 600 && !warningShown) { // 10 minutes = 600 seconds
+                    showLessonWarning();
+                    warningShown = true;
+                }
+                
+                // Auto-end lesson when time is up
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    endLesson();
+                }
+            }, 1000);
+        }
+        
+        // Update countdown display
+        function updateCountdownDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const countdownText = document.getElementById('countdownText');
+            const endTimeText = document.getElementById('endTimeText');
+            
+            countdownText.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update end time message
+            if (timeRemaining > 0) {
+                if (timeRemaining <= 60) { // 1 minute or less
+                    endTimeText.textContent = `Lesson sẽ đóng trong ${timeRemaining} giây`;
+                } else if (timeRemaining <= 300) { // 5 minutes or less
+                    endTimeText.textContent = `Sau ${minutes} phút nữa lesson sẽ đóng`;
+                } else {
+                    endTimeText.textContent = `Sau ${minutes} phút nữa lesson sẽ đóng`;
+                }
+            } else {
+                endTimeText.textContent = 'Lesson đã kết thúc';
+            }
+            
+            // Change color when time is running low
+            if (timeRemaining <= 300) { // 5 minutes
+                countdownText.style.color = '#ff5722';
+                endTimeText.style.color = '#ff5722';
+            } else if (timeRemaining <= 600) { // 10 minutes
+                countdownText.style.color = '#ff9800';
+                endTimeText.style.color = '#ff9800';
+            }
+        }
+        
+        // Show lesson warning
+        function showLessonWarning() {
+            const warning = document.getElementById('lessonWarning');
+            warning.style.display = 'block';
+            
+            // Auto-hide warning after 30 seconds
+            setTimeout(() => {
+                warning.style.display = 'none';
+            }, 30000);
+        }
+        
+        // End lesson function
+        function endLesson() {
+            clearInterval(countdownInterval);
+            document.getElementById('ratingModal').style.display = 'flex';
+        }
+        
+        // Chat logic
+        function sendMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const chat = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'chat-message learner';
+            div.textContent = msg;
+            chat.appendChild(div);
+            input.value = '';
+            chat.scrollTop = chat.scrollHeight;
+            // Simulate tutor reply
+            setTimeout(() => {
+                const reply = document.createElement('div');
+                reply.className = 'chat-message tutor';
+                reply.textContent = 'Tutor: ' + (msg.includes('?') ? 'That is a great question!' : 'Okay!');
+                chat.appendChild(reply);
+                chat.scrollTop = chat.scrollHeight;
+            }, 900);
+        }
+        // Mute/Unmute logic
+        const btnMute = document.getElementById('btnMute');
+        let muted = false;
+        btnMute.onclick = function() {
+            muted = !muted;
+            btnMute.classList.toggle('active', muted);
+            btnMute.innerHTML = muted ? '<i class="fas fa-microphone-slash"></i>' : '<i class="fas fa-microphone"></i>';
+        };
+        // Share Screen logic
+        const btnShare = document.getElementById('btnShare');
+        let sharing = false;
+        btnShare.onclick = function() {
+            sharing = !sharing;
+            btnShare.classList.toggle('active', sharing);
+        };
+        // Chat toggle logic
+        const btnChat = document.getElementById('btnChat');
+        const teamsChat = document.querySelector('.teams-chat');
+        btnChat.onclick = function() {
+            teamsChat.style.display = (teamsChat.style.display === 'none') ? 'flex' : 'none';
+        };
+        // End lesson logic
+        const btnEnd = document.getElementById('btnEnd');
+        btnEnd.onclick = function() {
+            endLesson();
+        };
+        
+        // Enhanced Rating logic
+        const ratingState = { 
+            knowledge: { stars: 0, toggle: '' }, 
+            communication: { stars: 0, toggle: '' }, 
+            support: { stars: 0, toggle: '' } 
+        };
+        
+        // Star rating logic
+        document.querySelectorAll('.star').forEach(star => {
+            star.onclick = function() {
+                const criteria = this.getAttribute('data-criteria');
+                const value = parseInt(this.getAttribute('data-value'));
+                ratingState[criteria].stars = value;
+                
+                // Remove selected from all in this criteria
+                document.querySelectorAll('.star[data-criteria="'+criteria+'"]')
+                    .forEach(s => s.classList.remove('selected'));
+                // Add selected to up to value
+                for (let i = 1; i <= value; i++) {
+                    document.querySelector('.star[data-criteria="'+criteria+'"][data-value="'+i+'"]').classList.add('selected');
+                }
+                
+                updateRatingSummary();
+            };
+        });
+        
+        // Toggle button logic
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.onclick = function() {
+                const criteria = this.getAttribute('data-criteria');
+                const value = this.getAttribute('data-value');
+                
+                // Remove active from all toggles in this criteria
+                document.querySelectorAll('.toggle-btn[data-criteria="'+criteria+'"]')
+                    .forEach(b => b.classList.remove('active'));
+                
+                // Add active to clicked toggle
+                this.classList.add('active');
+                ratingState[criteria].toggle = value;
+                
+                updateRatingSummary();
+            };
+        });
+        
+        // Update rating summary
+        function updateRatingSummary() {
+            const summary = document.getElementById('ratingSummary');
+            const summaryText = document.getElementById('summaryText');
+            
+            let totalStars = 0;
+            let totalToggles = 0;
+            let summaryDetails = [];
+            
+            Object.keys(ratingState).forEach(criteria => {
+                if (ratingState[criteria].stars > 0) {
+                    totalStars += ratingState[criteria].stars;
+                    summaryDetails.push(`${criteria}: ${ratingState[criteria].stars}/5 stars`);
+                }
+                if (ratingState[criteria].toggle) {
+                    totalToggles++;
+                    summaryDetails.push(`${criteria}: ${ratingState[criteria].toggle}`);
+                }
+            });
+            
+            if (totalStars > 0 || totalToggles > 0) {
+                const avgRating = totalStars > 0 ? (totalStars / Object.keys(ratingState).length).toFixed(1) : 'N/A';
+                summaryText.textContent = `Average: ${avgRating}/5 | ${summaryDetails.join(' | ')}`;
+                summary.style.display = 'block';
+            } else {
+                summary.style.display = 'none';
+            }
+        }
+        
+        function submitRating() {
+            const hasStars = Object.values(ratingState).some(r => r.stars > 0);
+            const hasToggles = Object.values(ratingState).some(r => r.toggle);
+            
+            if (!hasStars && !hasToggles) {
+                alert('Please rate at least one criteria using stars or toggle buttons!');
+                return;
+            }
+            
+            // Log rating data (for demo purposes)
+            console.log('Rating submitted:', ratingState);
+            console.log('User type:', userType);
+            
+            // Show success message
+            alert('Thank you for your rating! Redirecting to dashboard...');
+            
+            // Smart redirect based on user type
+            if (userType === 'tutor') {
+                window.location.href = 'tutor-new.html';
+            } else {
+                window.location.href = 'learner-new.html';
+            }
+        }
+        
+        // Start countdown when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            detectUserType(); // Detect user type first
+            startCountdown();
+        });
+    </script>
+</body>
+</html> 
