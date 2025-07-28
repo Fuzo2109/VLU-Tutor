@@ -325,7 +325,7 @@
     <!-- Rating Modal -->
     <div id="ratingModal">
         <div class="rating-frame">
-            <div class="rating-title">Rate your Tutor</div>
+            <div class="rating-title">Rating</div>
             
             <!-- Knowledge Rating -->
             <div class="rating-criteria">
@@ -441,6 +441,16 @@
             userType = type;
             localStorage.setItem('userType', type);
             console.log('User type set to:', type);
+        }
+        
+        // Function to debug current user type
+        function debugUserType() {
+            console.log('=== USER TYPE DEBUG ===');
+            console.log('Current URL:', window.location.href);
+            console.log('URL parameters:', new URLSearchParams(window.location.search).toString());
+            console.log('localStorage userType:', localStorage.getItem('userType'));
+            console.log('Current userType variable:', userType);
+            console.log('======================');
         }
         
         // Initialize countdown timer
@@ -560,6 +570,7 @@
         btnEnd.onclick = function() {
             endLesson();
         };
+        
         // Enhanced Rating logic
         const ratingState = { 
             knowledge: { stars: 0, toggle: '' }, 
