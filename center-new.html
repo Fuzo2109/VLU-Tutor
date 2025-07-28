@@ -90,9 +90,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showManageLessonsModal()">
+                        <a href="#" class="nav-link" onclick="showManageSubjectsModal()">
                             <i class="nav-icon fas fa-book"></i>
-                            Manage Lessons
+                            Manage Subjects
                         </a>
                     </li>
                     <li class="nav-item">
@@ -391,32 +391,91 @@
         </div>
     </div>
 
-    <!-- Manage Lessons Modal -->
-    <div id="manageLessonsModal" style="display:none; position:fixed; z-index:10003; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+    <!-- Manage Subjects Modal -->
+    <div id="manageSubjectsModal" style="display:none; position:fixed; z-index:10003; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
         <div class="card" style="width: 90vw; max-height: 90vh; overflow-y: auto;">
             <div class="card-header">
-                <div class="card-title">Manage Lessons</div>
-                <button onclick="closeManageLessonsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+                <div class="card-title">Manage Subjects</div>
+                <div style="display: flex; gap: 12px;">
+                    <button onclick="showAddSubjectForm()" style="background: #4caf50; color: white; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer;">
+                        <i class="fas fa-plus"></i> Add Subject
+                    </button>
+                    <button onclick="closeManageSubjectsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+                </div>
             </div>
             <div style="padding: var(--spacing-lg);">
                 <div class="table-container">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>LESSON ID</th>
-                                <th>SUBJECT</th>
-                                <th>TUTOR</th>
-                                <th>STUDENT</th>
-                                <th>DATE & TIME</th>
+                                <th>SUBJECT ID</th>
+                                <th>SUBJECT NAME</th>
+                                <th>CODE</th>
+                                <th>CATEGORY</th>
                                 <th>STATUS</th>
+                                <th>CREATED BY</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
-                        <tbody id="lessonsTableBody">
-                            <!-- Lessons will be loaded here -->
+                        <tbody id="subjectsTableBody">
+                            <!-- Subjects will be loaded here -->
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div id="addSubjectModal" style="display:none; position:fixed; z-index:10004; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center;">
+        <div class="card" style="width: 70vw; max-height: 80vh; overflow-y: auto;">
+            <div class="card-header">
+                <div class="card-title">Add New Subject</div>
+                <button onclick="closeAddSubjectModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">×</button>
+            </div>
+            <div style="padding: var(--spacing-lg);">
+                <form id="addSubjectForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 8px;">Subject Name: <span style="color:#ff0000;">*</span></label>
+                            <input type="text" id="subjectName" required style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 8px;">Subject Code: <span style="color:#ff0000;">*</span></label>
+                            <input type="text" id="subjectCode" required style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 8px;">Category: <span style="color:#ff0000;">*</span></label>
+                            <select id="subjectCategory" required style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                <option value="">Select Category</option>
+                                <option value="Science">Science</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Arts">Arts</option>
+                                <option value="Business">Business</option>
+                                <option value="Languages">Languages</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 8px;">Status:</label>
+                            <select id="subjectStatus" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Description:</label>
+                        <textarea id="subjectDescription" rows="4" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; resize: vertical;"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                        <button type="button" onclick="closeAddSubjectModal()" style="background: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                            Cancel
+                        </button>
+                        <button type="submit" style="background: var(--center-primary); color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
+                            <i class="fas fa-save"></i> Save Subject
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -670,6 +729,12 @@
                     closeTutorProfileModal();
                 }
             });
+            
+            // Add form submit event listener
+            const addSubjectForm = document.getElementById('addSubjectForm');
+            if (addSubjectForm) {
+                addSubjectForm.addEventListener('submit', saveSubject);
+            }
             
             // Subject Statistics Chart
             const subjectStatsCtx = document.getElementById('subjectStatsChart').getContext('2d');
@@ -1272,54 +1337,56 @@
             }
         }
         
-        // Manage Lessons Functions
-        function showManageLessonsModal() {
-            const modal = document.getElementById('manageLessonsModal');
+        // Manage Subjects Functions
+        function showManageSubjectsModal() {
+            const modal = document.getElementById('manageSubjectsModal');
             modal.style.display = 'flex';
-            loadLessonsList();
+            loadSubjectsList();
         }
         
-        function closeManageLessonsModal() {
-            const modal = document.getElementById('manageLessonsModal');
+        function closeManageSubjectsModal() {
+            const modal = document.getElementById('manageSubjectsModal');
             modal.style.display = 'none';
         }
         
-        function loadLessonsList() {
-            const tableBody = document.getElementById('lessonsTableBody');
+        function loadSubjectsList() {
+            let subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
             
-            // Demo lessons data
-            const lessons = [
-                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled' },
-                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed' },
-                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled' },
-                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled' },
-                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled' }
-            ];
+            if (subjects.length === 0) {
+                // Initialize with default subjects if empty
+                const defaultSubjects = [
+                    { id: "SUB001", name: "Mathematics", code: "MATH", category: "Science", status: "Active", createdBy: "VLU Support Center", createdAt: "2024-01-15T10:00:00Z", description: "Advanced mathematics including calculus, algebra, and statistics" },
+                    { id: "SUB002", name: "Physics", code: "PHYS", category: "Science", status: "Active", createdBy: "VLU Support Center", createdAt: "2024-01-15T10:00:00Z", description: "Classical and modern physics concepts" },
+                    { id: "SUB003", name: "Chemistry", code: "CHEM", category: "Science", status: "Active", createdBy: "VLU Support Center", createdAt: "2024-01-15T10:00:00Z", description: "Organic and inorganic chemistry principles" },
+                    { id: "SUB004", name: "Computer Science", code: "CS", category: "Technology", status: "Active", createdBy: "VLU Support Center", createdAt: "2024-01-15T10:00:00Z", description: "Programming, algorithms, and software development" },
+                    { id: "SUB005", name: "English", code: "ENG", category: "Languages", status: "Active", createdBy: "VLU Support Center", createdAt: "2024-01-15T10:00:00Z", description: "English language and literature" }
+                ];
+                localStorage.setItem('subjects', JSON.stringify(defaultSubjects));
+                subjects = defaultSubjects;
+            }
             
+            const tableBody = document.getElementById('subjectsTableBody');
             tableBody.innerHTML = '';
             
-            lessons.forEach(lesson => {
+            subjects.forEach(subject => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${lesson.id}</td>
-                    <td>${lesson.subject}</td>
-                    <td>${lesson.tutor}</td>
-                    <td>${lesson.student}</td>
-                    <td>${lesson.date} ${lesson.time}</td>
+                    <td>${subject.id}</td>
+                    <td>${subject.name}</td>
+                    <td>${subject.code}</td>
+                    <td>${subject.category}</td>
                     <td>
-                        <span style="color: ${getLessonStatusColor(lesson.status)}; font-weight: 600;">
-                            ${lesson.status}
+                        <span style="color: ${subject.status === 'Active' ? '#4caf50' : '#f44336'}; font-weight: 600;">
+                            ${subject.status}
                         </span>
                     </td>
+                    <td>${subject.createdBy}</td>
                     <td>
-                        <button onclick="viewLessonDetails('${lesson.id}')" style="background: #2196f3; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; margin-right: 4px;">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                        <button onclick="editLesson('${lesson.id}')" style="background: #ff9800; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; margin-right: 4px;">
+                        <button onclick="editSubject('${subject.id}')" style="background: #2196f3; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; margin-right: 4px;">
                             <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button onclick="cancelLesson('${lesson.id}')" style="background: #f44336; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer;">
-                            <i class="fas fa-times"></i> Cancel
+                        <button onclick="toggleSubjectStatus('${subject.id}')" style="background: ${subject.status === 'Active' ? '#f44336' : '#4caf50'}; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer;">
+                            <i class="fas fa-${subject.status === 'Active' ? 'times' : 'check'}"></i> ${subject.status === 'Active' ? 'Deactivate' : 'Activate'}
                         </button>
                     </td>
                 `;
@@ -1327,212 +1394,75 @@
             });
         }
         
-        function getLessonStatusColor(status) {
-            switch(status) {
-                case 'Scheduled': return '#2196f3';
-                case 'Completed': return '#4caf50';
-                case 'Cancelled': return '#f44336';
-                default: return '#666';
-            }
-        }
-        
-        function viewLessonDetails(lessonId) {
-            const lessons = [
-                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 301', notes: 'Advanced calculus topics' },
-                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed', duration: '60 minutes', location: 'Room 301', notes: 'Quantum mechanics introduction' },
-                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled', duration: '60 minutes', location: 'Lab 205', notes: 'Data structures and algorithms' },
-                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled', duration: '60 minutes', location: 'Lab 102', notes: 'Organic chemistry basics' },
-                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 201', notes: 'Academic writing skills' }
-            ];
-            
-            const lesson = lessons.find(l => l.id === lessonId);
-            if (!lesson) {
-                alert('Lesson not found!');
-                return;
-            }
-            
-            const modal = document.getElementById('lessonDetailsModal');
-            const content = document.getElementById('lessonDetailsContent');
-            
-            content.innerHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                    <div>
-                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Lesson Information</h4>
-                        <div style="margin-bottom: 8px;"><strong>Lesson ID:</strong> ${lesson.id}</div>
-                        <div style="margin-bottom: 8px;"><strong>Subject:</strong> ${lesson.subject}</div>
-                        <div style="margin-bottom: 8px;"><strong>Duration:</strong> ${lesson.duration}</div>
-                        <div style="margin-bottom: 8px;"><strong>Location:</strong> ${lesson.location}</div>
-                        <div style="margin-bottom: 8px;"><strong>Status:</strong> 
-                            <span style="color: ${getLessonStatusColor(lesson.status)}; font-weight: 600;">${lesson.status}</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 style="color: var(--center-primary); margin-bottom: 16px;">Schedule Details</h4>
-                        <div style="margin-bottom: 8px;"><strong>Date:</strong> ${lesson.date}</div>
-                        <div style="margin-bottom: 8px;"><strong>Time:</strong> ${lesson.time}</div>
-                        <div style="margin-bottom: 8px;"><strong>Tutor:</strong> ${lesson.tutor}</div>
-                        <div style="margin-bottom: 8px;"><strong>Student:</strong> ${lesson.student}</div>
-                    </div>
-                </div>
-                <div style="margin-top: 24px;">
-                    <h4 style="color: var(--center-primary); margin-bottom: 16px;">Notes</h4>
-                    <div style="background: #f8f9fa; padding: 16px; border-radius: 8px;">${lesson.notes}</div>
-                </div>
-            `;
-            
+        function showAddSubjectForm() {
+            const modal = document.getElementById('addSubjectModal');
             modal.style.display = 'flex';
+            document.getElementById('addSubjectForm').reset();
         }
         
-        function closeLessonDetailsModal() {
-            const modal = document.getElementById('lessonDetailsModal');
+        function closeAddSubjectModal() {
+            const modal = document.getElementById('addSubjectModal');
             modal.style.display = 'none';
         }
         
-        function editLesson(lessonId) {
-            const lessons = [
-                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 301', notes: 'Advanced calculus topics' },
-                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed', duration: '60 minutes', location: 'Room 301', notes: 'Quantum mechanics introduction' },
-                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled', duration: '60 minutes', location: 'Lab 205', notes: 'Data structures and algorithms' },
-                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled', duration: '60 minutes', location: 'Lab 102', notes: 'Organic chemistry basics' },
-                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled', duration: '60 minutes', location: 'Room 201', notes: 'Academic writing skills' }
-            ];
+        function saveSubject(event) {
+            event.preventDefault();
             
-            const lesson = lessons.find(l => l.id === lessonId);
-            if (!lesson) {
-                alert('Lesson not found!');
-                return;
-            }
+            const name = document.getElementById('subjectName').value;
+            const code = document.getElementById('subjectCode').value;
+            const category = document.getElementById('subjectCategory').value;
+            const status = document.getElementById('subjectStatus').value;
+            const description = document.getElementById('subjectDescription').value;
             
-            const modal = document.getElementById('editLessonModal');
-            const content = document.getElementById('editLessonContent');
-            
-            content.innerHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                    <div>
-                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Subject: <span style="color:#ff0000;">*</span></label>
-                        <select id="editSubject" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                            <option value="Mathematics" ${lesson.subject === 'Mathematics' ? 'selected' : ''}>Mathematics</option>
-                            <option value="Physics" ${lesson.subject === 'Physics' ? 'selected' : ''}>Physics</option>
-                            <option value="Chemistry" ${lesson.subject === 'Chemistry' ? 'selected' : ''}>Chemistry</option>
-                            <option value="Computer Science" ${lesson.subject === 'Computer Science' ? 'selected' : ''}>Computer Science</option>
-                            <option value="English" ${lesson.subject === 'English' ? 'selected' : ''}>English</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Tutor: <span style="color:#ff0000;">*</span></label>
-                        <select id="editTutor" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                            <option value="Dr. Sarah Johnson" ${lesson.tutor === 'Dr. Sarah Johnson' ? 'selected' : ''}>Dr. Sarah Johnson</option>
-                            <option value="Prof. Michael Chen" ${lesson.tutor === 'Prof. Michael Chen' ? 'selected' : ''}>Prof. Michael Chen</option>
-                            <option value="Dr. Emily Davis" ${lesson.tutor === 'Dr. Emily Davis' ? 'selected' : ''}>Dr. Emily Davis</option>
-                            <option value="Prof. David Wilson" ${lesson.tutor === 'Prof. David Wilson' ? 'selected' : ''}>Prof. David Wilson</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Date: <span style="color:#ff0000;">*</span></label>
-                        <input type="date" id="editDate" value="${lesson.date}" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                    </div>
-                    <div>
-                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Time: <span style="color:#ff0000;">*</span></label>
-                        <input type="time" id="editTime" value="${lesson.time}" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                    </div>
-                    <div>
-                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Duration:</label>
-                        <select id="editDuration" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                            <option value="30 minutes" ${lesson.duration === '30 minutes' ? 'selected' : ''}>30 minutes</option>
-                            <option value="60 minutes" ${lesson.duration === '60 minutes' ? 'selected' : ''}>60 minutes</option>
-                            <option value="90 minutes" ${lesson.duration === '90 minutes' ? 'selected' : ''}>90 minutes</option>
-                            <option value="120 minutes" ${lesson.duration === '120 minutes' ? 'selected' : ''}>120 minutes</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="font-weight: 500; display: block; margin-bottom: 8px;">Location:</label>
-                        <input type="text" id="editLocation" value="${lesson.location}" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                    </div>
-                </div>
-                <div style="margin-top: 24px;">
-                    <label style="font-weight: 500; display: block; margin-bottom: 8px;">Notes:</label>
-                    <textarea id="editNotes" rows="3" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; resize: vertical;">${lesson.notes}</textarea>
-                </div>
-                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-                    <button onclick="closeEditLessonModal()" style="background: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
-                        Cancel
-                    </button>
-                    <button onclick="saveLessonChanges('${lessonId}')" style="background: var(--center-primary); color: white; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer;">
-                        <i class="fas fa-save"></i> Save Changes
-                    </button>
-                </div>
-            `;
-            
-            modal.style.display = 'flex';
-        }
-        
-        function closeEditLessonModal() {
-            const modal = document.getElementById('editLessonModal');
-            modal.style.display = 'none';
-        }
-        
-        function saveLessonChanges(lessonId) {
-            const subject = document.getElementById('editSubject').value;
-            const tutor = document.getElementById('editTutor').value;
-            const date = document.getElementById('editDate').value;
-            const time = document.getElementById('editTime').value;
-            const duration = document.getElementById('editDuration').value;
-            const location = document.getElementById('editLocation').value;
-            const notes = document.getElementById('editNotes').value;
-            
-            if (!subject || !tutor || !date || !time) {
+            if (!name || !code || !category) {
                 alert('Please fill in all required fields!');
                 return;
             }
             
-            // Simulate saving changes
-            alert(`Lesson ${lessonId} updated successfully!\n\nNew Details:\nSubject: ${subject}\nTutor: ${tutor}\nDate: ${date}\nTime: ${time}\nDuration: ${duration}\nLocation: ${location}\nNotes: ${notes}`);
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const newSubject = {
+                id: `SUB${String(subjects.length + 1).padStart(3, '0')}`,
+                name: name,
+                code: code.toUpperCase(),
+                category: category,
+                status: status,
+                description: description,
+                createdBy: "VLU Support Center",
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
             
-            closeEditLessonModal();
-            loadLessonsList(); // Refresh the table
+            subjects.push(newSubject);
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            
+            alert('Subject added successfully!');
+            closeAddSubjectModal();
+            loadSubjectsList();
         }
         
-        function cancelLesson(lessonId) {
-            const lessons = [
-                { id: 'L001', subject: 'Mathematics', tutor: 'Dr. Sarah Johnson', student: 'Nguyen Van A', date: '2024-01-20', time: '14:00', status: 'Scheduled' },
-                { id: 'L002', subject: 'Physics', tutor: 'Dr. Sarah Johnson', student: 'Le Thi B', date: '2024-01-21', time: '10:00', status: 'Completed' },
-                { id: 'L003', subject: 'Computer Science', tutor: 'Prof. Michael Chen', student: 'Tran Van C', date: '2024-01-22', time: '16:00', status: 'Scheduled' },
-                { id: 'L004', subject: 'Chemistry', tutor: 'Dr. Emily Davis', student: 'Pham Thi D', date: '2024-01-19', time: '09:00', status: 'Cancelled' },
-                { id: 'L005', subject: 'English', tutor: 'Prof. David Wilson', student: 'Hoang Van E', date: '2024-01-23', time: '15:00', status: 'Scheduled' }
-            ];
+        function toggleSubjectStatus(subjectId) {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const subjectIndex = subjects.findIndex(s => s.id === subjectId);
             
-            const lesson = lessons.find(l => l.id === lessonId);
-            if (!lesson) {
-                alert('Lesson not found!');
+            if (subjectIndex !== -1) {
+                subjects[subjectIndex].status = subjects[subjectIndex].status === 'Active' ? 'Inactive' : 'Active';
+                subjects[subjectIndex].updatedAt = new Date().toISOString();
+                localStorage.setItem('subjects', JSON.stringify(subjects));
+                loadSubjectsList();
+            }
+        }
+        
+        function editSubject(subjectId) {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const subject = subjects.find(s => s.id === subjectId);
+            
+            if (!subject) {
+                alert('Subject not found!');
                 return;
             }
             
-            if (lesson.status === 'Completed') {
-                alert('Cannot cancel a completed lesson!');
-                return;
-            }
-            
-            if (lesson.status === 'Cancelled') {
-                alert('This lesson is already cancelled!');
-                return;
-            }
-            
-            const reason = prompt('Please provide a reason for cancellation:');
-            if (reason === null) {
-                return; // User cancelled
-            }
-            
-            if (!reason.trim()) {
-                alert('Please provide a reason for cancellation!');
-                return;
-            }
-            
-            // Simulate cancelling the lesson
-            alert(`Lesson ${lessonId} cancelled successfully!\n\nCancellation Details:\nSubject: ${lesson.subject}\nTutor: ${lesson.tutor}\nStudent: ${lesson.student}\nDate: ${lesson.date} ${lesson.time}\nReason: ${reason}\n\nNotification will be sent to both tutor and student.`);
-            
-            // Update the lesson status in the demo data
-            lesson.status = 'Cancelled';
-            loadLessonsList(); // Refresh the table
+            // For now, just show an alert with edit functionality
+            alert(`Edit functionality for subject: ${subject.name}\n\nThis would open an edit form similar to the add form.`);
         }
     </script>
 </body>
