@@ -484,11 +484,7 @@
                         <label style="font-weight: 500; display: block; margin-bottom: 8px;">Subject: <span style="color:#ff0000;">*</span></label>
                         <select id="singleSubject" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
                             <option value="">Select Subject</option>
-                            <option value="Mathematics">Mathematics</option>
-                            <option value="Physics">Physics</option>
-                            <option value="Chemistry">Chemistry</option>
-                            <option value="Computer Science">Computer Science</option>
-                            <option value="English">English</option>
+                            <!-- Subjects will be loaded dynamically from Center -->
                         </select>
                     </div>
                     <div>
@@ -2010,11 +2006,12 @@
             
             const modal = document.getElementById('createLessonModal');
             if (modal) {
-            modal.style.display = 'flex';
-            modal.style.alignItems = 'center';
-            modal.style.justifyContent = 'center';
-            setDefaultDate();
-            updateLessonPreview();
+                modal.style.display = 'flex';
+                modal.style.alignItems = 'center';
+                modal.style.justifyContent = 'center';
+                setDefaultDate();
+                loadAvailableSubjects();
+                updateLessonPreview();
                 console.log('Create lesson modal opened successfully');
             } else {
                 console.error('Create lesson modal not found!');
@@ -2469,6 +2466,40 @@
             // This could be called when a lesson ends
             console.log('Lesson ended, showing rating option...');
             showRatingModal();
+        }
+        
+        // Load available subjects from Center
+        function loadAvailableSubjects() {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const activeSubjects = subjects.filter(s => s.status === 'Active');
+            
+            const subjectsSelect = document.getElementById('singleSubject');
+            subjectsSelect.innerHTML = '<option value="">Select Subject</option>';
+            
+            if (activeSubjects.length === 0) {
+                // If no subjects from Center, use default subjects
+                const defaultSubjects = [
+                    { id: "SUB001", name: "Mathematics", code: "MATH" },
+                    { id: "SUB002", name: "Physics", code: "PHYS" },
+                    { id: "SUB003", name: "Chemistry", code: "CHEM" },
+                    { id: "SUB004", name: "Computer Science", code: "CS" },
+                    { id: "SUB005", name: "English", code: "ENG" }
+                ];
+                
+                defaultSubjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.name;
+                    option.textContent = subject.name;
+                    subjectsSelect.appendChild(option);
+                });
+            } else {
+                activeSubjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.name;
+                    option.textContent = subject.name;
+                    subjectsSelect.appendChild(option);
+                });
+            }
         }
     </script>
 </body>
