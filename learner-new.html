@@ -18,7 +18,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-graduation-cap"></i>
                 </div>
-                <div class="logo-text">VLU Tutor</div>
+                <div class="logo-text">VLU Learner</div>
             </div>
 
             <!-- User Profile -->
@@ -67,6 +67,7 @@
                             Profile
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="index.html" class="nav-link">
                             <i class="nav-icon fas fa-sign-out-alt"></i>
@@ -746,6 +747,10 @@
     <script>
         // Initialize Charts
         document.addEventListener('DOMContentLoaded', function() {
+            // Set user role automatically when page loads
+            const currentRole = detectUserRole();
+            console.log('Current user role detected:', currentRole);
+            
             // Study Time Chart
             const studyTimeCtx = document.getElementById('studyTimeChart').getContext('2d');
             new Chart(studyTimeCtx, {
@@ -4001,5 +4006,293 @@ Your request has been sent to the tutor. You will be notified when they respond.
         </div>
     </div>
 
+    <!-- Rating Modal -->
+    <div id="ratingModal" style="display: none; position: fixed; z-index: 10010; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+        <div style="width: 90%; max-width: 600px; max-height: 90vh; overflow: hidden; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); position: relative;" onclick="event.stopPropagation();">
+            <!-- Rating Header -->
+            <div style="background: linear-gradient(135deg, var(--learner-primary), #1976d2); color: white; padding: 20px 24px; border-radius: 12px 12px 0 0; position: relative;">
+                <button onclick="closeRatingModal()" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <i class="fas fa-star" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h2 style="margin: 0; font-size: 1.6rem;">Rate Your Tutor</h2>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Share your experience</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rating Content -->
+            <div style="padding: 24px; overflow-y: auto; max-height: calc(90vh - 140px);">
+                <!-- Teaching Quality Rating -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Teaching Quality</h3>
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <span class="rating-star" data-value="1">★</span>
+                        <span class="rating-star" data-value="2">★</span>
+                        <span class="rating-star" data-value="3">★</span>
+                        <span class="rating-star" data-value="4">★</span>
+                        <span class="rating-star" data-value="5">★</span>
+                    </div>
+                    <div id="teachingRating" style="color: #666; font-size: 0.9rem;">Click to rate</div>
+                </div>
+                
+                <!-- Communication Rating -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Communication Skills</h3>
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <span class="rating-star" data-value="1">★</span>
+                        <span class="rating-star" data-value="2">★</span>
+                        <span class="rating-star" data-value="3">★</span>
+                        <span class="rating-star" data-value="4">★</span>
+                        <span class="rating-star" data-value="5">★</span>
+                    </div>
+                    <div id="communicationRating" style="color: #666; font-size: 0.9rem;">Click to rate</div>
+                </div>
+                
+                <!-- Helpfulness Rating -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Helpfulness & Support</h3>
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <span class="rating-star" data-value="1">★</span>
+                        <span class="rating-star" data-value="2">★</span>
+                        <span class="rating-star" data-value="3">★</span>
+                        <span class="rating-star" data-value="4">★</span>
+                        <span class="rating-star" data-value="5">★</span>
+                    </div>
+                    <div id="helpfulnessRating" style="color: #666; font-size: 0.9rem;">Click to rate</div>
+                </div>
+                
+                <!-- Comments -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #333; margin-bottom: 16px;">Additional Comments</h3>
+                    <textarea id="ratingComment" rows="4" placeholder="Share your thoughts about the lesson..." style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button onclick="closeRatingModal()" style="background: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 1rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                        Cancel
+                    </button>
+                    <button onclick="submitLearnerRating()" style="background: var(--learner-primary); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 1rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='var(--learner-primary)'">
+                        <i class="fas fa-star"></i> Submit Rating
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ... existing code ...
+        
+        // Rating Functions
+        let ratingData = {
+            teaching: 0,
+            communication: 0,
+            helpfulness: 0
+        };
+        
+        function showRatingModal() {
+            console.log('Opening rating modal...');
+            document.getElementById('ratingModal').style.display = 'flex';
+            resetRatingForm();
+        }
+        
+        function closeRatingModal() {
+            console.log('Closing rating modal...');
+            document.getElementById('ratingModal').style.display = 'none';
+            resetRatingForm();
+        }
+        
+        function resetRatingForm() {
+            ratingData = {
+                teaching: 0,
+                communication: 0,
+                helpfulness: 0
+            };
+            
+            // Reset all stars
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.style.color = '#e0e0e0';
+            });
+            
+            // Reset rating text
+            document.getElementById('teachingRating').textContent = 'Click to rate';
+            document.getElementById('communicationRating').textContent = 'Click to rate';
+            document.getElementById('helpfulnessRating').textContent = 'Click to rate';
+            
+            // Reset comment
+            document.getElementById('ratingComment').value = '';
+        }
+        
+        // Star rating logic
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for rating stars
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    const category = this.closest('div').nextElementSibling.id.replace('Rating', '');
+                    
+                    // Update rating data
+                    ratingData[category] = value;
+                    
+                    // Update star colors
+                    const stars = this.parentElement.querySelectorAll('.rating-star');
+                    stars.forEach((s, index) => {
+                        if (index < value) {
+                            s.style.color = '#ffc107';
+                        } else {
+                            s.style.color = '#e0e0e0';
+                        }
+                    });
+                    
+                    // Update rating text
+                    const ratingText = document.getElementById(category + 'Rating');
+                    const ratingLabels = {
+                        teaching: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+                        communication: ['Unclear', 'Somewhat Clear', 'Clear', 'Very Clear', 'Excellent'],
+                        helpfulness: ['Unhelpful', 'Somewhat Helpful', 'Helpful', 'Very Helpful', 'Excellent']
+                    };
+                    
+                    ratingText.textContent = ratingLabels[category][value - 1];
+                });
+            });
+        });
+        
+        function submitLearnerRating() {
+            console.log('=== SUBMITTING LEARNER RATING ===');
+            console.log('Current page:', window.location.href);
+            
+            // Validate ratings
+            if (ratingData.teaching === 0 || ratingData.communication === 0 || ratingData.helpfulness === 0) {
+                alert('Please rate all categories before submitting.');
+                return;
+            }
+            
+            // Calculate average rating
+            const averageRating = (ratingData.teaching + ratingData.communication + ratingData.helpfulness) / 3;
+            
+            // Save rating data (in real app, this would be sent to server)
+            const ratingSubmission = {
+                timestamp: new Date().toISOString(),
+                studentId: 'student_001',
+                tutorId: 'tutor_001',
+                ratings: ratingData,
+                averageRating: averageRating,
+                comment: document.getElementById('ratingComment').value,
+                lessonId: 'lesson_001'
+            };
+            
+            // Store in localStorage for demo
+            const ratings = JSON.parse(localStorage.getItem('learnerRatings') || '[]');
+            ratings.push(ratingSubmission);
+            localStorage.setItem('learnerRatings', JSON.stringify(ratings));
+            
+            console.log('Rating submitted:', ratingSubmission);
+            
+            // Show success message
+            alert('Rating submitted successfully! Redirecting to learner dashboard...');
+            
+            // Force redirect to learner page (bypass role detection)
+            console.log('🎯 FORCE REDIRECTING TO LEARNER PAGE');
+            localStorage.setItem('userRole', 'student');
+            window.location.href = 'learner-new.html';
+        }
+        
+        function redirectBasedOnRole() {
+            // Detect user role (you can customize this based on your authentication system)
+            const userRole = detectUserRole();
+            console.log('Redirecting based on role:', userRole);
+            
+            // Since this is learner-new.html, force redirect to learner page
+            console.log('🎯 Force redirecting to learner page (since we are on learner page)');
+            localStorage.setItem('userRole', 'student'); // Ensure role is set correctly
+            window.location.href = 'learner-new.html';
+        }
+        
+        function detectUserRole() {
+            console.log('Detecting user role...');
+            
+            // Method 1: Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const roleFromUrl = urlParams.get('role');
+            if (roleFromUrl) {
+                console.log('Role from URL parameter:', roleFromUrl);
+                return roleFromUrl;
+            }
+            
+            // Method 2: Check localStorage
+            const storedRole = localStorage.getItem('userRole');
+            if (storedRole) {
+                console.log('Role from localStorage:', storedRole);
+                return storedRole;
+            }
+            
+            // Method 3: Check if we're on tutor page
+            if (window.location.pathname.includes('tutor-new.html')) {
+                console.log('Detected tutor page, setting role to tutor');
+                localStorage.setItem('userRole', 'tutor'); // Set it for future use
+                return 'tutor';
+            }
+            
+            // Method 4: Check if we're on learner page (most reliable)
+            if (window.location.pathname.includes('learner-new.html')) {
+                console.log('Detected learner page, setting role to student');
+                localStorage.setItem('userRole', 'student'); // Set it for future use
+                return 'student';
+            }
+            
+            // Method 5: Default fallback
+            console.log('No role detected, defaulting to student');
+            return 'student';
+        }
+        
+        // Function to set user role for testing
+        function setUserRole(role) {
+            localStorage.setItem('userRole', role);
+            console.log('User role set to:', role);
+        }
+        
+        // Function to debug current role
+        function debugCurrentRole() {
+            console.log('=== ROLE DEBUG ===');
+            console.log('Current URL:', window.location.href);
+            console.log('URL pathname:', window.location.pathname);
+            console.log('localStorage userRole:', localStorage.getItem('userRole'));
+            console.log('Detected role:', detectUserRole());
+            console.log('==================');
+        }
+        
+        // Function to test rating flow
+        function testRatingFlow() {
+            console.log('🧪 Testing rating flow...');
+            console.log('Current role:', detectUserRole());
+            console.log('Will redirect to:', detectUserRole() === 'student' ? 'learner-new.html' : 'tutor-new.html');
+            
+            // Simulate rating submission
+            alert('Testing rating flow - will redirect based on current role');
+            redirectBasedOnRole();
+        }
+        
+        // Add rating button to lesson actions (if needed)
+        function addRatingButton() {
+            // This could be called when a lesson ends
+            console.log('Lesson ended, showing rating option...');
+            showRatingModal();
+        }
+        
+        // Function to start lesson (for learner)
+        function startLesson(lessonId) {
+            // Confirm before starting lesson
+            if (confirm('Are you sure you want to start this lesson?')) {
+                console.log('Starting lesson:', lessonId);
+                // Pass userType=student to lesson.html
+                window.location.href = 'lesson.html?userType=student';
+            }
+        }
+        
+        // ... existing code ...
+    </script>
 </body>
 </html> 
